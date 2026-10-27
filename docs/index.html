@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Does the model know it doesn't know? Results</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<main id="main">
+  <h1>When the answer is not in the context, how often does a model invent one?</h1>
+  <p class="lead">Five models, two prompts, 100 answerable and 100 unanswerable SQuAD 2.0 questions, three repetitions each. All figures below are computed from <code>data/results.json</code>.</p>
+</main>
+<script src="assets/app.js"></script>
+<script>
+chrome("index.html");
+(async () => {
+  const main = document.getElementById("main");
+  const results = await loadResults(main);
+  if (!results) return;
+  runBanner(results).forEach((b) => main.append(b));
+  const host = el("div");
+  main.append(scopeControl(results, scopeFromQuery(results), render), host);
+  render(scopeFromQuery(results));
+
+  function render(scope) {
+    host.replaceChildren();
+    const r = results.run;
+    host.append(el("div", { class: "grid" },
+      stat(`${r.models.length} × 2 × ${r.reps}`, "models × prompts × repetitions"),
+      stat(`${scope.unanswerableItems} / ${scope.answerableItems}`, "unanswerable / answerable items"),
+      stat(`${r.okCalls}`, `successful calls (${r.errorCalls} failed attempts)`),
+      stat(`€${r.spentEur.toFixed(2)}`, `spent of €${r.capEur.toFixed(0)} hard cap`)));
+    const groups = r.models.map((m) => ({ label: m.alias, model: m.alias }));
+    const get = (g, p) => cellOf(scope, g.model, p);
+    host.append(el("h2", {}, "Invention and over-refusal"), legend(),
+      el("div", { class: "grid charts" },
+        card(barChart({ title: "Invented answers on unanswerable questions (lower is better)", groups,
+          valueOf: (g, p) => get(g, p).invented.value, ciOf: (g, p) => get(g, p).invented })),
+        card(barChart({ title: "Over-refusal on answerable questions (lower is better)", groups,
+          valueOf: (g, p) => get(g, p).overRefusal.value, ciOf: (g, p) => get(g, p).overRefusal })),
+        card(barChart({ title: "Exact match on answerable questions (higher is better)", groups,
+          valueOf: (g, p) => get(g, p).exactMatch.value, ciOf: (g, p) => get(g, p).exactMatch })),
+        card(barChart({ title: "Same decision across the 3 repetitions (higher is better)", groups,
+          valueOf: (g, p) => get(g, p).consistency.decisionAgreement }))));
+
+    const rows = scope.cells.map((c) => el("tr", {},
+      el("td", {}, c.model), el("td", { class: "l" }, c.prompt),
+      el("td", {}, pct(c.invented.value), " ", el("small", {}, ci(c.invented))),
+      el("td", {}, pct(c.overRefusal.value), " ", el("small", {}, ci(c.overRefusal))),
+      el("td", {}, pct(c.exactMatch.value)), el("td", {}, pct(c.f1.value)),
+      el("td", {}, pct(c.exactMatchWhenAnswered)),
+      el("td", {}, pct(c.consistency.decisionAgreement)),
+      el("td", {}, pct(c.consistency.answerAgreement)),
+      el("td", {}, `${c.sentinelAbstentions}/${c.phraseAbstentions}`),
+      el("td", {}, `${c.emptyCalls}/${c.formatViolations}/${c.ambiguousCalls}`)));
+    host.append(el("h2", {}, "All numbers"), el("div", { class: "table-scroll" }, el("table", {},
+      el("thead", {}, el("tr", {}, ["Model", "Prompt", "Invented (unans.)", "Over-refusal (ans.)", "EM", "F1", "EM if answered",
+        "Decision consistency", "Answer consistency", "Abstain: sentinel/phrase", "Empty/format/ambiguous"].map((t, i) => el("th", { class: i === 1 ? "l" : "" }, t)))),
+      el("tbody", {}, rows))),
+      el("p", { class: "lead" }, "EM and F1 count a refusal as 0. “Abstain: sentinel/phrase” counts replies that were exactly NOT_IN_CONTEXT versus refusals recognised by the wording rule (see Method). Intervals resample items, not calls."));
+  }
+  function stat(value, label) { return el("div", { class: "card stat" }, el("b", {}, value), el("span", {}, label)); }
+  function card(svg) { return el("div", { class: "card" }, svg); }
+})();
+</script>
+</body>
+</html>

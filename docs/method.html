@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Method</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<main id="main">
+  <h1>Method</h1>
+  <p class="lead">What was run, exactly. Everything on this page is read from the run manifest in <code>data/results.json</code>; the full write-up is in the repository README.</p>
+</main>
+<script src="assets/app.js"></script>
+<script>
+chrome("method.html");
+(async () => {
+  const main = document.getElementById("main");
+  const results = await loadResults(main);
+  if (!results) return;
+  runBanner(results).forEach((b) => main.append(b));
+  const r = results.run, s = results.sample;
+  const kv = (rows) => el("table", {}, el("tbody", {}, rows.map(([k, v]) => el("tr", {}, el("td", { class: "l" }, k), el("td", { class: "l" }, v)))));
+  main.append(
+    el("h2", {}, "Sample"),
+    kv([["Source", `${s.source.name}, ${s.source.license}`], ["Source SHA-256", el("code", {}, s.source.sha256)],
+      ["Seed", String(s.seed)], ["Items", `${s.answerable} answerable, ${s.unanswerable} unanswerable`],
+      ["Algorithm", s.algorithm], ["Sample file SHA-256", el("code", {}, s.sampleSha256)]]),
+    el("h2", {}, "Run"),
+    kv([["Run id", `${r.runId} (${r.kind})`], ["Started / finished", `${r.startedAt} / ${r.finishedAt || "n/a"}`],
+      ["Git commit", el("code", {}, r.gitCommit || "unknown")], ["Repetitions", String(r.reps)],
+      ["Temperature", `${r.temperature} (omitted for models that do not accept it, see table)`], ["Max output tokens", String(r.maxTokens)],
+      ["Calls", `${r.okCalls} ok of ${r.plannedCalls} planned, ${r.errorCalls} failed attempts`], ["Spent", `€${r.spentEur.toFixed(2)} of a €${r.capEur.toFixed(0)} hard cap`]]),
+    el("h2", {}, "Models"),
+    el("div", { class: "table-scroll" }, el("table", {},
+      el("thead", {}, el("tr", {}, ["Alias", "OpenRouter id", "Canonical slug", "Temperature sent", "Reasoning", "USD / M tokens in/out"].map((t) => el("th", { class: "l" }, t)))),
+      el("tbody", {}, r.models.map((m) => el("tr", {}, el("td", { class: "l" }, m.alias), el("td", { class: "l" }, el("code", {}, m.openRouterId)),
+        el("td", { class: "l" }, el("code", {}, m.canonicalSlug || "")), el("td", { class: "l" }, m.temperatureSent === null ? "not sent" : String(m.temperatureSent)),
+        el("td", { class: "l" }, m.reasoning ? JSON.stringify(m.reasoning) : "default"),
+        el("td", { class: "l" }, `${m.promptUsdPerMillion.toFixed(2)} / ${m.completionUsdPerMillion.toFixed(2)}`)))))),
+    el("h2", {}, "Prompts"),
+    ...Object.entries(r.promptTemplates).flatMap(([name, text]) => [
+      el("p", {}, el("b", {}, name), " ", el("small", {}, "SHA-256 ", el("code", {}, r.prompts[name].sha256))), el("pre", {}, text)]),
+    el("h2", {}, "Disputed items"),
+    results.disputed.length === 0 ? el("p", {}, "No items have been flagged as disputed.") :
+      el("ul", {}, results.disputed.map((d) => el("li", {}, el("code", {}, d.id), ": ", d.reason || "no reason given"))));
+})();
+</script>
+</body>
+</html>

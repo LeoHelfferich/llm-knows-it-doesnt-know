@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strict vs neutral trade-off</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<main id="main">
+  <h1>What does the strict prompt buy, and what does it cost?</h1>
+  <p class="lead">Each arrow goes from the neutral prompt to the strict prompt for one model. Left is better on over-refusal, down is better on invention. The bottom-left corner is a model that never invents and never refuses an answerable question.</p>
+</main>
+<script src="assets/app.js"></script>
+<script>
+chrome("tradeoff.html");
+(async () => {
+  const main = document.getElementById("main");
+  const results = await loadResults(main);
+  if (!results) return;
+  runBanner(results).forEach((b) => main.append(b));
+  const host = el("div");
+  main.append(scopeControl(results, scopeFromQuery(results), render), host);
+  render(scopeFromQuery(results));
+
+  function render(scope) {
+    host.replaceChildren();
+    host.append(el("div", { class: "card" }, scatter(scope)));
+    const rows = scope.tradeoffs.map((t) => el("tr", {},
+      el("td", {}, t.model),
+      el("td", {}, pp(t.deltaInvented.value), " ", el("small", {}, rangePp(t.deltaInvented))),
+      el("td", {}, pp(t.deltaOverRefusal.value), " ", el("small", {}, rangePp(t.deltaOverRefusal))),
+      el("td", {}, pp(t.deltaExactMatch.value), " ", el("small", {}, rangePp(t.deltaExactMatch))),
+      el("td", {}, t.inventedAvoidedPerExtraRefusal === null ? "n/a" : t.inventedAvoidedPerExtraRefusal.toFixed(1)),
+      el("td", { class: "l" }, el("span", { class: "tag" }, t.pattern))));
+    host.append(el("h2", {}, "Strict minus neutral, paired by item"), el("div", { class: "table-scroll" }, el("table", {},
+      el("thead", {}, el("tr", {}, ["Model", "Δ invention (unans.)", "Δ over-refusal (ans.)", "Δ exact match (ans.)",
+        "Inventions avoided per extra refusal", "Pattern"].map((t, i) => el("th", { class: i === 5 ? "l" : "" }, t)))),
+      el("tbody", {}, rows))),
+      el("p", { class: "lead" }, "“Inventions avoided per extra refusal” is the drop in the invention rate divided by the rise in the over-refusal rate; it is only defined when invention falls and over-refusal rises. Both sets have the same size, so the ratio is also the number of avoided inventions per additional wrongly refused answerable question. Intervals are 95% bootstrap intervals over items."));
+
+    const bal = scope.cells.map((c) => el("tr", {}, el("td", {}, c.model), el("td", { class: "l" }, c.prompt),
+      el("td", {}, pct(c.abstentionBalancedAccuracy)), el("td", {}, pct(c.inventedMatchesPlausible)),
+      el("td", {}, pct(c.consistency.decisionAgreementUnanswerable)), el("td", {}, pct(c.consistency.decisionAgreementAnswerable)),
+      el("td", {}, pct(c.consistency.fullyConsistentItems))));
+    host.append(el("h2", {}, "Balance and self-consistency"), el("div", { class: "table-scroll" }, el("table", {},
+      el("thead", {}, el("tr", {}, ["Model", "Prompt", "Abstention balanced accuracy", "Invented answer ≈ SQuAD plausible answer",
+        "Same decision, unans.", "Same decision, ans.", "Items with identical decision in all reps"].map((t, i) => el("th", { class: i === 1 ? "l" : "" }, t)))),
+      el("tbody", {}, bal))));
+  }
+  function rangePp(i) { return i && i.lo !== null ? `[${pp(i.lo, 0)}, ${pp(i.hi, 0)}]` : ""; }
+
+  function scatter(scope) {
+    const W = 640, H = 420, m = { top: 20, right: 20, bottom: 50, left: 54 };
+    const w = W - m.left - m.right, h = H - m.top - m.bottom;
+    const maxX = Math.max(0.1, ...scope.cells.map((c) => c.overRefusal.value || 0)) * 1.15;
+    const maxY = Math.max(0.1, ...scope.cells.map((c) => c.invented.value || 0)) * 1.1;
+    const X = (v) => m.left + (v / maxX) * w, Y = (v) => m.top + h - (v / maxY) * h;
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img", "aria-label": "Invention versus over-refusal" });
+    svg.append(svgEl("defs", {}, svgEl("marker", { id: "arrow", viewBox: "0 0 10 10", refX: 9, refY: 5, markerWidth: 6, markerHeight: 6, orient: "auto-start-reverse" },
+      svgEl("path", { d: "M0 0L10 5L0 10z", fill: "#444" }))));
+    for (let t = 0; t <= 1.0001; t += 0.1) {
+      if (t <= maxX) { svg.append(svgEl("line", { x1: X(t), x2: X(t), y1: m.top, y2: m.top + h, class: "grid" }));
+        svg.append(svgEl("text", { x: X(t), y: m.top + h + 16, "text-anchor": "middle", "font-size": 10 }, Math.round(t * 100) + "%")); }
+      if (t <= maxY) { svg.append(svgEl("line", { x1: m.left, x2: m.left + w, y1: Y(t), y2: Y(t), class: "grid" }));
+        svg.append(svgEl("text", { x: m.left - 6, y: Y(t) + 4, "text-anchor": "end", "font-size": 10 }, Math.round(t * 100) + "%")); }
+    }
+    svg.append(svgEl("text", { x: m.left + w / 2, y: H - 8, "text-anchor": "middle", "font-size": 12 }, "Over-refusal rate on answerable questions"));
+    svg.append(svgEl("text", { transform: `translate(14 ${m.top + h / 2}) rotate(-90)`, "text-anchor": "middle", "font-size": 12 }, "Invented-answer rate on unanswerable questions"));
+    results.run.models.forEach((model) => {
+      const n = cellOf(scope, model.alias, "neutral"), s = cellOf(scope, model.alias, "strict");
+      if (n.invented.value === null || s.invented.value === null || n.overRefusal.value === null || s.overRefusal.value === null) return;
+      svg.append(svgEl("line", { x1: X(n.overRefusal.value), y1: Y(n.invented.value), x2: X(s.overRefusal.value), y2: Y(s.invented.value),
+        stroke: "#444", "stroke-width": 1.2, "marker-end": "url(#arrow)" }));
+      [[n, "neutral"], [s, "strict"]].forEach(([c, p]) => {
+        const dot = svgEl("circle", { cx: X(c.overRefusal.value), cy: Y(c.invented.value), r: 5, fill: SERIES[p] });
+        dot.append(svgEl("title", {}, `${model.alias} (${p}): invented ${pct(c.invented.value)}, over-refusal ${pct(c.overRefusal.value)}`));
+        svg.append(dot);
+      });
+      svg.append(svgEl("text", { x: X(n.overRefusal.value) + 7, y: Y(n.invented.value) - 6, "font-size": 11 }, model.alias));
+    });
+    return el("div", {}, legend(false), svg);
+  }
+})();
+</script>
+</body>
+</html>
