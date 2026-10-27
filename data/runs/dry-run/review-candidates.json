@@ -1,0 +1,14 @@
+{
+  "runId": "dry-run",
+  "howToUse": "Candidates only. Inspect each item (docs/items.html), then copy confirmed ids into data/disputed.json with a reason and re-run `analyze`; nothing is excluded automatically.",
+  "candidates": [
+    {
+      "id": "5ad15d77645df0001a2d18c3",
+      "kind": "unanswerable",
+      "question": "When did the Court of Justice deny that the Commission could only propose that there must some criminal sanctions?",
+      "reasons": [
+        "3 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    }
+  ]
+}
