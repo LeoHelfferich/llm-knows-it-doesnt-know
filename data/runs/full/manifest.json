@@ -1,0 +1,193 @@
+{
+  "schemaVersion": 1,
+  "runId": "full",
+  "kind": "full",
+  "mock": false,
+  "status": "complete",
+  "stopReason": null,
+  "startedAt": "2026-10-27T19:19:06.209815147Z",
+  "finishedAt": "2026-10-27T20:20:41.709740732Z",
+  "gitCommit": null,
+  "gitDirty": null,
+  "java": "Debian 21.0.12.1",
+  "fingerprint": "c8f84029bd15e81752c3c85e0337d79670c26f7f447bca5fad54f0e7e3ee0892",
+  "configSha256": "bffbc7fc0846f1d92b6ae02c09ab668bb552f20fe35194f87fd88f9ac9807a6f",
+  "sampleSha256": "984fd83a1d174127509c266c47a803d2e63ca2bf2b3f10f38802b114620c8438",
+  "sourceDatasetSha256": "80a5225e94905956a6446d296ca1093975c4d3b3260f1d6c8f68bc2ab77182d8",
+  "seed": 2026,
+  "reps": 3,
+  "temperature": 0.0,
+  "maxTokens": 1024,
+  "itemCount": 200,
+  "answerableItems": 100,
+  "unanswerableItems": 100,
+  "prompts": {
+    "neutral": {
+      "version": 1,
+      "sha256": "390ecad4ca9e7ab11d2e02a415644c549df618beaade9cb2f875b57235209074"
+    },
+    "strict": {
+      "version": 1,
+      "sha256": "e9e57b8ac64ff591e3eb1d43dfb45545d7644cd06039b71ffe1bd60e85668231"
+    }
+  },
+  "models": [
+    {
+      "alias": "grok-4.3",
+      "openRouterId": "x-ai/grok-4.3",
+      "canonicalSlug": "x-ai/grok-4.3-20260430",
+      "name": "SpaceXAI: Grok 4.3",
+      "promptUsdPerMillion": 1.25,
+      "completionUsdPerMillion": 2.5,
+      "temperatureSent": 0.0,
+      "reasoning": {
+        "effort": "none",
+        "exclude": true
+      }
+    },
+    {
+      "alias": "gpt-5.4-mini",
+      "openRouterId": "openai/gpt-5.4-mini",
+      "canonicalSlug": "openai/gpt-5.4-mini-20260317",
+      "name": "OpenAI: GPT-5.4 Mini",
+      "promptUsdPerMillion": 0.75,
+      "completionUsdPerMillion": 4.5,
+      "temperatureSent": null,
+      "reasoning": {
+        "effort": "none",
+        "exclude": true
+      }
+    },
+    {
+      "alias": "claude-haiku-4.5",
+      "openRouterId": "anthropic/claude-haiku-4.5",
+      "canonicalSlug": "anthropic/claude-4.5-haiku-20251001",
+      "name": "Anthropic: Claude Haiku 4.5",
+      "promptUsdPerMillion": 1.0,
+      "completionUsdPerMillion": 5.0,
+      "temperatureSent": 0.0,
+      "reasoning": null
+    },
+    {
+      "alias": "gemini-2.5-flash",
+      "openRouterId": "google/gemini-2.5-flash",
+      "canonicalSlug": "google/gemini-2.5-flash",
+      "name": "Google: Gemini 2.5 Flash",
+      "promptUsdPerMillion": 0.3,
+      "completionUsdPerMillion": 2.5,
+      "temperatureSent": 0.0,
+      "reasoning": {
+        "effort": "none",
+        "exclude": true
+      }
+    },
+    {
+      "alias": "llama-3.3-70b",
+      "openRouterId": "meta-llama/llama-3.3-70b-instruct",
+      "canonicalSlug": "meta-llama/llama-3.3-70b-instruct",
+      "name": "Meta: Llama 3.3 70B Instruct",
+      "promptUsdPerMillion": 0.09999999999999999,
+      "completionUsdPerMillion": 0.32,
+      "temperatureSent": 0.0,
+      "reasoning": null
+    }
+  ],
+  "plannedCalls": 6000,
+  "okCalls": 6000,
+  "errorCalls": 1886,
+  "spentUsdThisRun": 1.2613678769999965,
+  "spentEurThisRun": 1.2613678769999965,
+  "eurPerUsd": 1.0,
+  "capEur": 5.0,
+  "estimate": {
+    "label": "full",
+    "basis": "token counts observed in an earlier run",
+    "pricingRetrievedOn": "2026-10-27",
+    "items": 200,
+    "reps": 3,
+    "promptVariants": 2,
+    "models": [
+      {
+        "alias": "grok-4.3",
+        "openRouterId": "x-ai/grok-4.3",
+        "calls": 1200,
+        "inputTokensPerCall": 393.99487452898256,
+        "expectedOutputTokensPerCall": 6.15,
+        "pessimisticOutputTokensPerCall": 18.450000000000003,
+        "ceilingOutputTokensPerCall": 1024.0,
+        "promptUsdPerMillion": 1.25,
+        "completionUsdPerMillion": 2.5,
+        "expectedUsd": 0.6094423117934739,
+        "pessimisticUsd": 0.7645407741521687,
+        "ceilingUsd": 3.9218325000000007
+      },
+      {
+        "alias": "gpt-5.4-mini",
+        "openRouterId": "openai/gpt-5.4-mini",
+        "calls": 1200,
+        "inputTokensPerCall": 238.7407263689569,
+        "expectedOutputTokensPerCall": 9.8,
+        "pessimisticOutputTokensPerCall": 29.400000000000002,
+        "ceilingOutputTokensPerCall": 1024.0,
+        "promptUsdPerMillion": 0.75,
+        "completionUsdPerMillion": 4.5,
+        "expectedUsd": 0.2677866537320612,
+        "pessimisticUsd": 0.41659998447847346,
+        "ceilingUsd": 6.0394995
+      },
+      {
+        "alias": "claude-haiku-4.5",
+        "openRouterId": "anthropic/claude-haiku-4.5",
+        "calls": 1200,
+        "inputTokensPerCall": 260.3618423795398,
+        "expectedOutputTokensPerCall": 12.7,
+        "pessimisticOutputTokensPerCall": 38.099999999999994,
+        "ceilingOutputTokensPerCall": 1024.0,
+        "promptUsdPerMillion": 1.0,
+        "completionUsdPerMillion": 5.0,
+        "expectedUsd": 0.3886342108554477,
+        "pessimisticUsd": 0.6035210530265372,
+        "ceilingUsd": 6.823866000000001
+      },
+      {
+        "alias": "gemini-2.5-flash",
+        "openRouterId": "google/gemini-2.5-flash",
+        "calls": 1200,
+        "inputTokensPerCall": 236.56044576284773,
+        "expectedOutputTokensPerCall": 6.95,
+        "pessimisticOutputTokensPerCall": 20.85,
+        "ceilingOutputTokensPerCall": 1024.0,
+        "promptUsdPerMillion": 0.3,
+        "completionUsdPerMillion": 2.5,
+        "expectedUsd": 0.10601176047462518,
+        "pessimisticUsd": 0.16474411256955024,
+        "ceilingUsd": 3.2759598
+      },
+      {
+        "alias": "llama-3.3-70b",
+        "openRouterId": "meta-llama/llama-3.3-70b-instruct",
+        "calls": 1200,
+        "inputTokensPerCall": 250.64142467730298,
+        "expectedOutputTokensPerCall": 7.8,
+        "pessimisticOutputTokensPerCall": 23.4,
+        "ceilingOutputTokensPerCall": 1024.0,
+        "promptUsdPerMillion": 0.09999999999999999,
+        "completionUsdPerMillion": 0.32,
+        "expectedUsd": 0.033072170961276355,
+        "pessimisticUsd": 0.04507796515353163,
+        "ceilingUsd": 0.46120259999999996
+      }
+    ],
+    "totalCalls": 6000,
+    "expectedUsd": 1.4049471078168843,
+    "pessimisticUsd": 1.9944838893802614,
+    "ceilingUsd": 20.5223604,
+    "eurPerUsd": 1.0,
+    "expectedEur": 1.4049471078168843,
+    "pessimisticEur": 1.9944838893802614,
+    "ceilingEur": 20.5223604,
+    "capEur": 5.0,
+    "expectedFitsCap": true,
+    "pessimisticFitsCap": true
+  }
+}
