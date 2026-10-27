@@ -89,17 +89,17 @@ The same five as part 1, resolved from OpenRouter's public model list (`GET http
 
 | Alias | OpenRouter id | Canonical slug | USD / M tokens in / out | `temperature` | Reasoning setting sent |
 |---|---|---|---|---|---|
-| grok-4.3 | `x-ai/grok-4.3` | `x-ai/grok-4.3-20260430` | 1.25 / 2.50 | sent | `effort: low`, hidden |
-| gpt-5.4-mini | `openai/gpt-5.4-mini` | `openai/gpt-5.4-mini-20260317` | 0.75 / 4.50 | **not supported, omitted** | `effort: low`, hidden |
+| grok-4.3 | `x-ai/grok-4.3` | `x-ai/grok-4.3-20260430` | 1.25 / 2.50 | sent | `effort: none`, hidden |
+| gpt-5.4-mini | `openai/gpt-5.4-mini` | `openai/gpt-5.4-mini-20260317` | 0.75 / 4.50 | **not supported, omitted** | `effort: none`, hidden |
 | claude-haiku-4.5 | `anthropic/claude-haiku-4.5` | `anthropic/claude-4.5-haiku-20251001` | 1.00 / 5.00 | sent | none (extended thinking off) |
-| gemini-2.5-flash | `google/gemini-2.5-flash` | `google/gemini-2.5-flash` | 0.30 / 2.50 | sent | `effort: low`, hidden |
+| gemini-2.5-flash | `google/gemini-2.5-flash` | `google/gemini-2.5-flash` | 0.30 / 2.50 | sent | `effort: none`, hidden |
 | llama-3.3-70b | `meta-llama/llama-3.3-70b-instruct` | `meta-llama/llama-3.3-70b-instruct` | 0.10 / 0.32 | sent | not applicable |
 
 Notes:
 
 - Ids are floating aliases on OpenRouter. The manifest records the id, the canonical slug at run time and, per call, the provider and the model name OpenRouter reports, so a later change is visible.
 - A test asserts that `sendTemperature` in the config equals OpenRouter's `supported_parameters` for every model.
-- "Hidden" means `reasoning.exclude = true`: reasoning tokens are still produced and billed but not returned. The reasoning budget is set to low for the three models that reason by default to keep cost and latency predictable; this is a deviation from "provider defaults" and is recorded in every manifest.
+- "Hidden" means `reasoning.exclude = true`: reasoning tokens are still produced and billed but not returned. Reasoning effort is set to `none` for the three models that reason by default, the same setting as part 1, to keep cost predictable and the series comparable; this is a deviation from "provider defaults" and is recorded in every manifest.
 - Provider routing is left to OpenRouter (no pinning); the serving provider is stored with each call.
 
 ### Prompts
@@ -149,7 +149,7 @@ Sentinel and phrase abstentions are reported separately in the result files. The
 
 ### Call parameters
 
-- Temperature: **0.7**, sent to all models except GPT-5.4 Mini. See the open question below: this value is a placeholder because part 1's setting could not be read.
+- Temperature: **0**, sent to all models except GPT-5.4 Mini (which does not support it), matching part 1 (`llm-judges-and-trust`, `config/experiment.json`). Repeats therefore measure provider nondeterminism, not sampling noise.
 - `max_tokens`: 1024 (includes reasoning tokens).
 - 3 repetitions of every item x model x prompt, each a separate request. No seed is sent (it would make repetitions identical where supported and is not supported everywhere).
 - Single-turn, no system prompt, no tools, no streaming. OpenRouter usage accounting is on, so the real cost of each call is stored.
@@ -216,8 +216,8 @@ The run manifest (`data/runs/<id>/manifest.json`) records: run id and kind, mock
 
 ## Limitations and deviations
 
-- **Part 1 was not readable** when this repository was built (it is private). Structure and conventions follow the written brief; anything that could differ from part 1 (temperature, package layout, JSON layouts) is flagged under open questions in the pull request and is a one-line config change.
-- Reasoning effort is `low` for Grok 4.3, GPT-5.4 Mini and Gemini 2.5 Flash. A model that reasons by default and is forced to reason little may behave differently from its default setting.
+- Temperature (0) and reasoning effort (`none`) were aligned with part 1 after the repository was built. Part 1 also pinned Llama 3.3 70B to the DeepInfra route; this repository does not pin a provider (the provider used is recorded per call).
+- Reasoning effort is `none` for Grok 4.3, GPT-5.4 Mini and Gemini 2.5 Flash, as in part 1. A model that reasons by default and is told not to may behave differently from its default setting.
 - Abstention in the neutral prompt is detected by a wording rule, not by the sentinel, so neutral-prompt refusals are somewhat less certain than strict-prompt refusals. Sentinel and phrase abstentions are reported separately for that reason.
 - 100 + 100 items give intervals of a few percentage points, wide enough that small model differences are not significant. Only items, not repetitions, are resampled.
 - One dataset, one passage format, short extractive answers. Results say nothing about long documents or retrieval pipelines.
