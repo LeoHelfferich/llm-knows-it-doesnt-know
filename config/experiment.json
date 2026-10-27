@@ -1,0 +1,58 @@
+{
+  "seed": 2026,
+  "answerableCount": 100,
+  "unanswerableCount": 100,
+  "reps": 3,
+  "temperature": 0.7,
+  "maxTokens": 1024,
+  "capEur": 10.0,
+  "safetyMarginEur": 0.25,
+  "eurPerUsd": 1.0,
+  "concurrency": 8,
+  "charsPerToken": 3.5,
+  "assumedAnswerTokens": 12,
+  "bootstrapResamples": 2000,
+  "bootstrapSeed": 20261027,
+  "dryRun": {
+    "answerable": 5,
+    "unanswerable": 5,
+    "reps": 1
+  },
+  "models": [
+    {
+      "alias": "grok-4.3",
+      "openRouterId": "x-ai/grok-4.3",
+      "sendTemperature": true,
+      "reasoning": { "effort": "low", "exclude": true },
+      "assumedReasoningTokens": 250
+    },
+    {
+      "alias": "gpt-5.4-mini",
+      "openRouterId": "openai/gpt-5.4-mini",
+      "sendTemperature": false,
+      "reasoning": { "effort": "low", "exclude": true },
+      "assumedReasoningTokens": 200
+    },
+    {
+      "alias": "claude-haiku-4.5",
+      "openRouterId": "anthropic/claude-haiku-4.5",
+      "sendTemperature": true,
+      "reasoning": null,
+      "assumedReasoningTokens": 0
+    },
+    {
+      "alias": "gemini-2.5-flash",
+      "openRouterId": "google/gemini-2.5-flash",
+      "sendTemperature": true,
+      "reasoning": { "effort": "low", "exclude": true },
+      "assumedReasoningTokens": 250
+    },
+    {
+      "alias": "llama-3.3-70b",
+      "openRouterId": "meta-llama/llama-3.3-70b-instruct",
+      "sendTemperature": true,
+      "reasoning": null,
+      "assumedReasoningTokens": 0
+    }
+  ]
+}
