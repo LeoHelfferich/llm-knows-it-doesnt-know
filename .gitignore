@@ -1,0 +1,36 @@
+# Gradle
+.gradle/
+build/
+out/
+
+# IDE and language-server output. `bin` is the Java extension's copy of the sources.
+bin/
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.kotlin/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets. The API key is read from the environment only.
+.env
+.env.*
+*.key
+*.pem
+local.properties
+
+# The downloaded SQuAD file. The committed sample is data/sample.json.
+data/raw/
+
+# JVM crash dumps
+hs_err_pid*
+replay_pid*
+*.hprof
+*.log
+
+# Run directory lock, written while a run is in progress.
+**/.lock

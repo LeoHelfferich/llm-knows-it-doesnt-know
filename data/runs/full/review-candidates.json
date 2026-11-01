@@ -1,0 +1,302 @@
+{
+  "runId": "full",
+  "howToUse": "Candidates only. Inspect each item (docs/items.html), then copy confirmed ids into data/disputed.json with a reason and re-run `analyze`; nothing is excluded automatically.",
+  "candidates": [
+    {
+      "id": "5ad15d77645df0001a2d18c3",
+      "kind": "unanswerable",
+      "question": "When did the Court of Justice deny that the Commission could only propose that there must some criminal sanctions?",
+      "reasons": [
+        "3 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5737a25ac3c5551400e51f51",
+      "kind": "answerable",
+      "question": "What causes strain in structures?",
+      "reasons": [
+        "mean neutral-prompt F1 across models is 0.11; gold answer may be wrong or ambiguous"
+      ]
+    },
+    {
+      "id": "5ad2877cd7d075001a429914",
+      "kind": "unanswerable",
+      "question": "What is associated with horizontal forces?",
+      "reasons": [
+        "4 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5a83878de60761001a2eb779",
+      "kind": "unanswerable",
+      "question": "What kind of auricles do cilia have?",
+      "reasons": [
+        "3 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5ad039ec77cf76001a686e66",
+      "kind": "unanswerable",
+      "question": "Trotsky thought what was not needed for a true Russian revolution.",
+      "reasons": [
+        "3 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5ad3c3bc604f3c001a3fefa0",
+      "kind": "unanswerable",
+      "question": "Along with internal combustion engines, what machines have superseded power in some areas?",
+      "reasons": [
+        "5 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5a679db8f038b7001ab0c350",
+      "kind": "unanswerable",
+      "question": "How are school fees in the rest of the world compared to Ireland?",
+      "reasons": [
+        "5 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5ad03d2277cf76001a686ecf",
+      "kind": "unanswerable",
+      "question": "What does the UGSS California Earthquake forecast model?",
+      "reasons": [
+        "5 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5ad4ef8b5b96ef001a10a6bc",
+      "kind": "unanswerable",
+      "question": "What drugs help T cells respond to signals correctly?",
+      "reasons": [
+        "3 reply(ies) mix an answer with refusal wording; the abstention rule could not decide"
+      ]
+    },
+    {
+      "id": "5ad3d560604f3c001a3ff2c7",
+      "kind": "unanswerable",
+      "question": "What components raise steam temperature above its saturated firebox point?",
+      "reasons": [
+        "5 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5a7504cb97ca42001a521dc4",
+      "kind": "unanswerable",
+      "question": "European nations and which country disassociated themselves from the US for this reason? ",
+      "reasons": [
+        "5 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5a7b0fae21c2de001afe9d2a",
+      "kind": "unanswerable",
+      "question": "How many miles north of downtown Fresno is the Tower District neighborhood?",
+      "reasons": [
+        "3 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5a25d529ef59cd001a623cee",
+      "kind": "unanswerable",
+      "question": "What is one reason a labour problem happens and can't be funded?",
+      "reasons": [
+        "4 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5a668d25f038b7001ab0bfad",
+      "kind": "unanswerable",
+      "question": "Originally built with four layers, how many layers did DEC evolve to have?",
+      "reasons": [
+        "3 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5acfebe477cf76001a6864d8",
+      "kind": "unanswerable",
+      "question": "What did Saudi Arabia not try to repress to compensate for its loss of stature?",
+      "reasons": [
+        "5 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5ad4fe635b96ef001a10a8bb",
+      "kind": "unanswerable",
+      "question": "Where is the Autumn Jamboree hosted?",
+      "reasons": [
+        "3 reply(ies) mix an answer with refusal wording; the abstention rule could not decide"
+      ]
+    },
+    {
+      "id": "5ad4bea25b96ef001a109ef8",
+      "kind": "unanswerable",
+      "question": "What city, raided by clans and dukes, preceded the founding of Boleslaw?",
+      "reasons": [
+        "5 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5acf7fdf77cf76001a684fd6",
+      "kind": "unanswerable",
+      "question": "To what schools did the U of C agree to provide books and supplies free of charge?",
+      "reasons": [
+        "5 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5a3e495c378766001a002545",
+      "kind": "unanswerable",
+      "question": "Which date was affirmed by the IPCC?",
+      "reasons": [
+        "4 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5a8251c231013a001a3353f0",
+      "kind": "unanswerable",
+      "question": "What actor starred in the Movie Saving Private Ryan?",
+      "reasons": [
+        "3 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5a8221dc31013a001a335233",
+      "kind": "unanswerable",
+      "question": "What infrastructure will be improved in Storrow Drive?",
+      "reasons": [
+        "5 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5acfa8a277cf76001a68576c",
+      "kind": "unanswerable",
+      "question": "Which Nobel Memorial Prize in British Sciences is an alumni?",
+      "reasons": [
+        "2 reply(ies) mix an answer with refusal wording; the abstention rule could not decide"
+      ]
+    },
+    {
+      "id": "5a8917433b2508001a72a4b6",
+      "kind": "unanswerable",
+      "question": "What type of numbers are always multiples of distinct divisors?",
+      "reasons": [
+        "4 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5a822dc931013a001a335298",
+      "kind": "unanswerable",
+      "question": "What increased about Harvard's student body in 2005?",
+      "reasons": [
+        "3 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5ad3a8fe604f3c001a3feb09",
+      "kind": "unanswerable",
+      "question": "According to disagreement between Iroquois and British, where was a strong house to be built?",
+      "reasons": [
+        "3 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5a38c34ea4b263001a8c190b",
+      "kind": "unanswerable",
+      "question": "What action did the US plan to take in 2004 due to rising oil prices?",
+      "reasons": [
+        "3 reply(ies) mix an answer with refusal wording; the abstention rule could not decide"
+      ]
+    },
+    {
+      "id": "5ad13ef3645df0001a2d1390",
+      "kind": "unanswerable",
+      "question": "Which type of law did not concern the Eu's governance structure?",
+      "reasons": [
+        "5 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5a668d4ef038b7001ab0bfc4",
+      "kind": "unanswerable",
+      "question": "What does being a Conservative do to the seriousness of a protest?",
+      "reasons": [
+        "4 reply(ies) mix an answer with refusal wording; the abstention rule could not decide"
+      ]
+    },
+    {
+      "id": "5ad4ea425b96ef001a10a629",
+      "kind": "unanswerable",
+      "question": "What chronic conditions can cause sleep deprivation?",
+      "reasons": [
+        "3 reply(ies) mix an answer with refusal wording; the abstention rule could not decide"
+      ]
+    },
+    {
+      "id": "5ad3fc1f604f3c001a3ffb7b",
+      "kind": "unanswerable",
+      "question": "What type of steam engine doesn't need valves to direct engines?",
+      "reasons": [
+        "5 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5ad560b85b96ef001a10ad22",
+      "kind": "unanswerable",
+      "question": "What system not often define classes like IP and AM/",
+      "reasons": [
+        "3 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5ad25a8bd7d075001a428e32",
+      "kind": "unanswerable",
+      "question": "What has the lowest impact on wealth accumulation and the resulting income inequality?",
+      "reasons": [
+        "3 reply(ies) mix an answer with refusal wording; the abstention rule could not decide"
+      ]
+    },
+    {
+      "id": "5ad141e1645df0001a2d1404",
+      "kind": "unanswerable",
+      "question": "What a a citizen or company not invoke?",
+      "reasons": [
+        "3 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5ad02fdf77cf76001a686d98",
+      "kind": "unanswerable",
+      "question": "The Presiding Officer tries the achieve a balance between similar viewpoints and whom?",
+      "reasons": [
+        "5 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5ad292f0d7d075001a429ad4",
+      "kind": "unanswerable",
+      "question": "What was not shaped by sedimentation of the rivers and tidal currents?",
+      "reasons": [
+        "3 reply(ies) mix an answer with refusal wording; the abstention rule could not decide"
+      ]
+    },
+    {
+      "id": "5ad0470477cf76001a686f80",
+      "kind": "unanswerable",
+      "question": "What business districts are within the downtown Los Angeles area?",
+      "reasons": [
+        "5 of 5 models gave an answer under the strict prompt (in at least 2/3 of reps); check whether the context actually contains one"
+      ]
+    },
+    {
+      "id": "5acf774877cf76001a684e99",
+      "kind": "unanswerable",
+      "question": "Other than UChicago or simply Chicago, what is another term for the University of Graham Business?",
+      "reasons": [
+        "3 reply(ies) mix an answer with refusal wording; the abstention rule could not decide"
+      ]
+    }
+  ]
+}

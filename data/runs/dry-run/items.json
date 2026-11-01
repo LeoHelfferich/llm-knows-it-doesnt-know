@@ -1,0 +1,1268 @@
+{
+  "runId": "dry-run",
+  "items": [
+    {
+      "id": "57266193dd62a815002e832a",
+      "kind": "answerable",
+      "pairIndex": 0,
+      "article": "Geology",
+      "context": "Seismologists can use the arrival times of seismic waves in reverse to image the interior of the Earth. Early advances in this field showed the existence of a liquid outer core (where shear waves were not able to propagate) and a dense solid inner core. These advances led to the development of a layered model of the Earth, with a crust and lithosphere on top, the mantle below (separated within itself by seismic discontinuities at 410 and 660 kilometers), and the outer core and inner core below that. More recently, seismologists have been able to create detailed images of wave speeds inside the earth in the same way a doctor images a body in a CT scan. These images have led to a much more detailed view of the interior of the Earth, and have replaced the simplified layered model with a much more dynamic model.",
+      "question": "What types of waves do seismologists use to image the interior of the Earth?",
+      "answers": [
+        "seismic waves",
+        "seismic"
+      ],
+      "plausibleAnswers": [],
+      "disputed": false,
+      "disputedReason": null,
+      "responses": [
+        {
+          "model": "grok-4.3",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "seismic waves",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "grok-4.3",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "seismic waves",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "seismic waves",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "seismic waves",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "seismic waves",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "seismic waves",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "seismic waves",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "seismic waves",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "seismic waves",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "seismic waves",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        }
+      ]
+    },
+    {
+      "id": "5a57cf7a770dc0001aeefda5",
+      "kind": "unanswerable",
+      "pairIndex": 0,
+      "article": "Geology",
+      "context": "Seismologists can use the arrival times of seismic waves in reverse to image the interior of the Earth. Early advances in this field showed the existence of a liquid outer core (where shear waves were not able to propagate) and a dense solid inner core. These advances led to the development of a layered model of the Earth, with a crust and lithosphere on top, the mantle below (separated within itself by seismic discontinuities at 410 and 660 kilometers), and the outer core and inner core below that. More recently, seismologists have been able to create detailed images of wave speeds inside the earth in the same way a doctor images a body in a CT scan. These images have led to a much more detailed view of the interior of the Earth, and have replaced the simplified layered model with a much more dynamic model.",
+      "question": "What have CT scans lead to for doctors and their patients?",
+      "answers": [],
+      "plausibleAnswers": [
+        "a much more detailed view"
+      ],
+      "disputed": false,
+      "disputedReason": null,
+      "responses": [
+        {
+          "model": "grok-4.3",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "detailed images of wave speeds inside the earth",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "grok-4.3",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "detailed images of a body",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ABSTAIN_PHRASE",
+          "answer": null,
+          "raw": "ANSWER: The context does not provide information about what CT scans have led to for doctors and their patients.",
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "a much more detailed view of the interior of the Earth",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "detailed images of the body",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        }
+      ]
+    },
+    {
+      "id": "5730208fa23a5019007fcdee",
+      "kind": "answerable",
+      "pairIndex": 1,
+      "article": "Islamism",
+      "context": "For some decades prior to the First Palestine Intifada in 1987, the Muslim Brotherhood in Palestine took a \"quiescent\" stance towards Israel, focusing on preaching, education and social services, and benefiting from Israel's \"indulgence\" to build up a network of mosques and charitable organizations. As the First Intifada gathered momentum and Palestinian shopkeepers closed their shops in support of the uprising, the Brotherhood announced the formation of HAMAS (\"zeal\"), devoted to Jihad against Israel. Rather than being more moderate than the PLO, the 1988 Hamas charter took a more uncompromising stand, calling for the destruction of Israel and the establishment of an Islamic state in Palestine. It was soon competing with and then overtaking the PLO for control of the intifada. The Brotherhood's base of devout middle class found common cause with the impoverished youth of the intifada in their cultural conservatism and antipathy for activities of the secular middle class such as drinking alcohol and going about without hijab.",
+      "question": "What organization is devoted to Jihad against Israel?",
+      "answers": [
+        "HAMAS"
+      ],
+      "plausibleAnswers": [],
+      "disputed": false,
+      "disputedReason": null,
+      "responses": [
+        {
+          "model": "grok-4.3",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "HAMAS (\"zeal\")",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": false
+        },
+        {
+          "model": "grok-4.3",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "HAMAS",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "HAMAS",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "HAMAS",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "HAMAS",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "HAMAS",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "HAMAS",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "HAMAS",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "HAMAS",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "HAMAS",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        }
+      ]
+    },
+    {
+      "id": "5acfecc577cf76001a686510",
+      "kind": "unanswerable",
+      "pairIndex": 1,
+      "article": "Islamism",
+      "context": "For some decades prior to the First Palestine Intifada in 1987, the Muslim Brotherhood in Palestine took a \"quiescent\" stance towards Israel, focusing on preaching, education and social services, and benefiting from Israel's \"indulgence\" to build up a network of mosques and charitable organizations. As the First Intifada gathered momentum and Palestinian shopkeepers closed their shops in support of the uprising, the Brotherhood announced the formation of HAMAS (\"zeal\"), devoted to Jihad against Israel. Rather than being more moderate than the PLO, the 1988 Hamas charter took a more uncompromising stand, calling for the destruction of Israel and the establishment of an Islamic state in Palestine. It was soon competing with and then overtaking the PLO for control of the intifada. The Brotherhood's base of devout middle class found common cause with the impoverished youth of the intifada in their cultural conservatism and antipathy for activities of the secular middle class such as drinking alcohol and going about without hijab.",
+      "question": "Until 1987, what stance did the Muslim Brotherhood in Iraq take towards Israel?",
+      "answers": [],
+      "plausibleAnswers": [
+        "quiescent"
+      ],
+      "disputed": false,
+      "disputedReason": null,
+      "responses": [
+        {
+          "model": "grok-4.3",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "quiescent stance towards Israel",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "grok-4.3",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "quiescent stance",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ABSTAIN_PHRASE",
+          "answer": null,
+          "raw": "ANSWER: The context does not mention the Muslim Brotherhood in Iraq; it only discusses the Muslim Brotherhood in Palestine.",
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ABSTAIN_PHRASE",
+          "answer": null,
+          "raw": "ANSWER: The context does not provide information about the Muslim Brotherhood in Iraq.",
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "quiescent stance",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        }
+      ]
+    },
+    {
+      "id": "5726c19add62a815002e8f8d",
+      "kind": "answerable",
+      "pairIndex": 2,
+      "article": "European_Union_law",
+      "context": "In 2006, a toxic waste spill off the coast of Côte d'Ivoire, from a European ship, prompted the Commission to look into legislation against toxic waste. Environment Commissioner Stavros Dimas stated that \"Such highly toxic waste should never have left the European Union\". With countries such as Spain not even having a crime against shipping toxic waste, Franco Frattini, the Justice, Freedom and Security Commissioner, proposed with Dimas to create criminal sentences for \"ecological crimes\". The competence for the Union to do this was contested in 2005 at the Court of Justice resulting in a victory for the Commission. That ruling set a precedent that the Commission, on a supranational basis, may legislate in criminal law – something never done before. So far, the only other proposal has been the draft intellectual property rights directive. Motions were tabled in the European Parliament against that legislation on the basis that criminal law should not be an EU competence, but was rejected at vote. However, in October 2007, the Court of Justice ruled that the Commission could not propose what the criminal sanctions could be, only that there must be some.",
+      "question": "When was the competence for the Union to create criminal sentences for ecological crimes contested?",
+      "answers": [
+        "2005"
+      ],
+      "plausibleAnswers": [],
+      "disputed": false,
+      "disputedReason": null,
+      "responses": [
+        {
+          "model": "grok-4.3",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "2005 at the Court of Justice",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": false
+        },
+        {
+          "model": "grok-4.3",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "2005",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "in 2005",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": false
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "in 2005",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": false
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "2005",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "2005",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "2005",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "2005",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "In 2005",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": false
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "in 2005",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "5ad15d77645df0001a2d18c3",
+      "kind": "unanswerable",
+      "pairIndex": 2,
+      "article": "European_Union_law",
+      "context": "In 2006, a toxic waste spill off the coast of Côte d'Ivoire, from a European ship, prompted the Commission to look into legislation against toxic waste. Environment Commissioner Stavros Dimas stated that \"Such highly toxic waste should never have left the European Union\". With countries such as Spain not even having a crime against shipping toxic waste, Franco Frattini, the Justice, Freedom and Security Commissioner, proposed with Dimas to create criminal sentences for \"ecological crimes\". The competence for the Union to do this was contested in 2005 at the Court of Justice resulting in a victory for the Commission. That ruling set a precedent that the Commission, on a supranational basis, may legislate in criminal law – something never done before. So far, the only other proposal has been the draft intellectual property rights directive. Motions were tabled in the European Parliament against that legislation on the basis that criminal law should not be an EU competence, but was rejected at vote. However, in October 2007, the Court of Justice ruled that the Commission could not propose what the criminal sanctions could be, only that there must be some.",
+      "question": "When did the Court of Justice deny that the Commission could only propose that there must some criminal sanctions?",
+      "answers": [],
+      "plausibleAnswers": [
+        "October 2007"
+      ],
+      "disputed": false,
+      "disputedReason": null,
+      "responses": [
+        {
+          "model": "grok-4.3",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "October 2007",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "grok-4.3",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "October 2007",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "October 2007",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "October 2007",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "October 2007",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "October 2007",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "October 2007",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "October 2007",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        }
+      ]
+    },
+    {
+      "id": "56e1c7e2cd28a01900c67b74",
+      "kind": "answerable",
+      "pairIndex": 3,
+      "article": "Computational_complexity_theory",
+      "context": "The time and space hierarchy theorems form the basis for most separation results of complexity classes. For instance, the time hierarchy theorem tells us that P is strictly contained in EXPTIME, and the space hierarchy theorem tells us that L is strictly contained in PSPACE.",
+      "question": "What is the foundation for separation results within complexity classes?",
+      "answers": [
+        "time and space hierarchy theorems",
+        "The time and space hierarchy theorems"
+      ],
+      "plausibleAnswers": [],
+      "disputed": false,
+      "disputedReason": null,
+      "responses": [
+        {
+          "model": "grok-4.3",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "The time and space hierarchy theorems",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "grok-4.3",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "The time and space hierarchy theorems",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "the time and space hierarchy theorems",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "the time and space hierarchy theorems",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "The time and space hierarchy theorems",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "The time and space hierarchy theorems form the basis for most separation results of complexity classes.",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": false
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "The time and space hierarchy theorems",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "The time and space hierarchy theorems",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "the time and space hierarchy theorems",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "the time and space hierarchy theorems",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        }
+      ]
+    },
+    {
+      "id": "5ad562525b96ef001a10ad53",
+      "kind": "unanswerable",
+      "pairIndex": 3,
+      "article": "Computational_complexity_theory",
+      "context": "The time and space hierarchy theorems form the basis for most separation results of complexity classes. For instance, the time hierarchy theorem tells us that P is strictly contained in EXPTIME, and the space hierarchy theorem tells us that L is strictly contained in PSPACE.",
+      "question": "What is not strictly contained in PSPACE?",
+      "answers": [],
+      "plausibleAnswers": [
+        "L"
+      ],
+      "disputed": false,
+      "disputedReason": null,
+      "responses": [
+        {
+          "model": "grok-4.3",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "P is strictly contained in EXPTIME",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "grok-4.3",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "L",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "L",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "EXPTIME",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "L",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "PSPACE",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "L",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        }
+      ]
+    },
+    {
+      "id": "57268a37f1498d1400e8e340",
+      "kind": "answerable",
+      "pairIndex": 4,
+      "article": "Ctenophora",
+      "context": "Ctenophores used to be regarded as \"dead ends\" in marine food chains because it was thought their low ratio of organic matter to salt and water made them a poor diet for other animals. It is also often difficult to identify the remains of ctenophores in the guts of possible predators, although the combs sometimes remain intact long enough to provide a clue. Detailed investigation of chum salmon, Oncorhynchus keta, showed that these fish digest ctenophores 20 times as fast as an equal weight of shrimps, and that ctenophores can provide a good diet if there are enough of them around. Beroids prey mainly on other ctenophores. Some jellyfish and turtles eat large quantities of ctenophores, and jellyfish may temporarily wipe out ctenophore populations. Since ctenophores and jellyfish often have large seasonal variations in population, most fish that prey on them are generalists, and may have a greater effect on populations than the specialist jelly-eaters. This is underlined by an observation of herbivorous fishes deliberately feeding on gelatinous zooplankton during blooms in the Red Sea. The larvae of some sea anemones are parasites on ctenophores, as are the larvae of some flatworms that parasitize fish when they reach adulthood.",
+      "question": "Turtles and jellyfish can eat large quantities of what?",
+      "answers": [
+        "ctenophores,",
+        "ctenophores"
+      ],
+      "plausibleAnswers": [],
+      "disputed": false,
+      "disputedReason": null,
+      "responses": [
+        {
+          "model": "grok-4.3",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "ctenophores",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "grok-4.3",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "ctenophores",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "ctenophores",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "ctenophores",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "ctenophores",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "ctenophores",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "ctenophores",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "ctenophores",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "ctenophores",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "ctenophores",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": true
+        }
+      ]
+    },
+    {
+      "id": "5a8397d0e60761001a2eb7fd",
+      "kind": "unanswerable",
+      "pairIndex": 4,
+      "article": "Ctenophora",
+      "context": "Ctenophores used to be regarded as \"dead ends\" in marine food chains because it was thought their low ratio of organic matter to salt and water made them a poor diet for other animals. It is also often difficult to identify the remains of ctenophores in the guts of possible predators, although the combs sometimes remain intact long enough to provide a clue. Detailed investigation of chum salmon, Oncorhynchus keta, showed that these fish digest ctenophores 20 times as fast as an equal weight of shrimps, and that ctenophores can provide a good diet if there are enough of them around. Beroids prey mainly on other ctenophores. Some jellyfish and turtles eat large quantities of ctenophores, and jellyfish may temporarily wipe out ctenophore populations. Since ctenophores and jellyfish often have large seasonal variations in population, most fish that prey on them are generalists, and may have a greater effect on populations than the specialist jelly-eaters. This is underlined by an observation of herbivorous fishes deliberately feeding on gelatinous zooplankton during blooms in the Red Sea. The larvae of some sea anemones are parasites on ctenophores, as are the larvae of some flatworms that parasitize fish when they reach adulthood.",
+      "question": "How quickly do shrimp digest ctenophores as compared to other prey?",
+      "answers": [],
+      "plausibleAnswers": [
+        "20 times as fast"
+      ],
+      "disputed": false,
+      "disputedReason": null,
+      "responses": [
+        {
+          "model": "grok-4.3",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "20 times as fast as an equal weight of shrimps",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "grok-4.3",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "20 times as fast",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gpt-5.4-mini",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ABSTAIN_PHRASE",
+          "answer": null,
+          "raw": "ANSWER: The context does not provide information about how quickly shrimp digest ctenophores.",
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "claude-haiku-4.5",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ABSTAIN_PHRASE",
+          "answer": null,
+          "raw": "ANSWER: The context does not provide information on how quickly shrimp digest ctenophores.",
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "gemini-2.5-flash",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ABSTAIN_SENTINEL",
+          "answer": null,
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "neutral",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "20 times slower",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        },
+        {
+          "model": "llama-3.3-70b",
+          "prompt": "strict",
+          "rep": 1,
+          "outcome": "ANSWER",
+          "answer": "20 times as slow as ctenophores",
+          "raw": null,
+          "formatViolation": false,
+          "ambiguous": false,
+          "correct": null
+        }
+      ]
+    }
+  ]
+}

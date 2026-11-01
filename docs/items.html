@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Item explorer</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<main id="main">
+  <h1>Item explorer</h1>
+  <p class="lead">Every sampled question with the raw reply of every model, prompt and repetition. Use it to spot annotation problems, then list the ids in <code>data/disputed.json</code>.</p>
+</main>
+<script src="assets/app.js"></script>
+<script>
+chrome("items.html");
+(async () => {
+  const main = document.getElementById("main");
+  let data;
+  try { data = await loadJson("data/items.json"); } catch (e) {
+    main.append(el("div", { class: "banner" }, el("b", {}, "No item data published yet. "), "Run the analysis to produce docs/data/items.json. (" + e.message + ")"));
+    return;
+  }
+  const kindSel = el("select", { id: "kind" }, el("option", { value: "" }, "All"), el("option", { value: "unanswerable" }, "Unanswerable"), el("option", { value: "answerable" }, "Answerable"));
+  const behaviour = el("select", { id: "behaviour" }, el("option", { value: "" }, "Any behaviour"),
+    el("option", { value: "invented-strict" }, "Invented even under strict prompt"), el("option", { value: "refused-strict" }, "Refused under strict prompt"),
+    el("option", { value: "disputed" }, "Marked disputed"), el("option", { value: "unstable" }, "Decision changed between reps"));
+  const search = el("input", { type: "search", placeholder: "Search question or id", "aria-label": "Search" });
+  const count = el("span", {});
+  const list = el("div", { class: "item-list", role: "listbox" });
+  const detail = el("div", {});
+  main.append(el("div", { class: "controls" }, el("label", {}, "Kind ", kindSel), el("label", {}, behaviour), search, count),
+    el("div", { class: "items" }, list, detail));
+
+  const isAbstain = (r) => r.outcome === "ABSTAIN_SENTINEL" || r.outcome === "ABSTAIN_PHRASE";
+  const rate = (item, prompt, pred) => { const r = item.responses.filter((x) => x.prompt === prompt); return r.length ? r.filter(pred).length / r.length : 0; };
+  const unstable = (item) => {
+    const by = {};
+    item.responses.forEach((r) => { (by[r.model + "|" + r.prompt] ||= new Set()).add(isAbstain(r) ? "abstain" : r.outcome); });
+    return Object.values(by).some((s) => s.size > 1);
+  };
+  const matches = (item) => {
+    if (kindSel.value && item.kind !== kindSel.value) return false;
+    const q = search.value.trim().toLowerCase();
+    if (q && !(item.question.toLowerCase().includes(q) || item.id.includes(q))) return false;
+    switch (behaviour.value) {
+      case "invented-strict": return item.kind === "unanswerable" && rate(item, "strict", (r) => r.outcome === "ANSWER") >= 0.5;
+      case "refused-strict": return item.kind === "answerable" && rate(item, "strict", isAbstain) >= 0.5;
+      case "disputed": return item.disputed;
+      case "unstable": return unstable(item);
+      default: return true;
+    }
+  };
+  let selected = data.items[0] || null;
+  function replyCell(item, r) {
+    if (!r) return el("td", { class: "l" }, "—");
+    const abst = isAbstain(r);
+    const cls = abst ? "ab" : (item.kind === "unanswerable" ? "inv" : (r.correct ? "ab" : ""));
+    const label = r.outcome === "ABSTAIN_SENTINEL" ? "NOT_IN_CONTEXT"
+      : r.outcome === "ABSTAIN_PHRASE" ? "refusal"
+      : (r.answer ?? "(empty)");
+    return el("td", { class: "l" },
+      el("span", { class: cls }, label),
+      r.raw ? el("div", { class: "raw" }, r.raw) : "",
+      r.formatViolation ? el("small", {}, " [format]") : "",
+      r.ambiguous ? el("small", {}, " [ambiguous]") : "");
+  }
+  function renderList() {
+    const items = data.items.filter(matches);
+    count.textContent = `${items.length} of ${data.items.length} items`;
+    list.replaceChildren(...items.map((item) => el("button", { type: "button", role: "option", "aria-selected": item === selected ? "true" : "false", onclick: () => { selected = item; renderList(); renderDetail(); } },
+      el("span", { class: "tag " + (item.kind === "unanswerable" ? "warn" : "ok") }, item.kind), item.disputed ? el("span", { class: "tag bad" }, "disputed") : "", " ", item.question)));
+  }
+  function renderDetail() {
+    detail.replaceChildren();
+    if (!selected) { detail.append(el("p", { class: "lead" }, "Select an item.")); return; }
+    const it = selected;
+    detail.append(el("div", { class: "card" },
+      el("div", {}, el("span", { class: "tag" }, it.kind), " ", el("small", {}, `${it.article} · id ${it.id}`)),
+      el("h2", { style: "margin-top:8px" }, it.question),
+      el("p", {}, el("b", {}, "Gold answers: "), it.answers.length ? it.answers.join(" | ") : el("i", {}, "none (unanswerable)")),
+      it.plausibleAnswers.length ? el("p", {}, el("b", {}, "SQuAD plausible (wrong) answers: "), it.plausibleAnswers.join(" | ")) : "",
+      it.disputed ? el("div", { class: "banner" }, el("b", {}, "Disputed: "), it.disputedReason || "no reason given") : "",
+      el("div", { class: "ctx" }, it.context)));
+    const models = [...new Set(it.responses.map((r) => r.model))];
+    const rows = models.flatMap((m) => ["neutral", "strict"].map((p) => {
+      const rs = it.responses.filter((r) => r.model === m && r.prompt === p).sort((a, b) => a.rep - b.rep);
+      return el("tr", {}, el("td", {}, m), el("td", { class: "l" }, p), ...[1, 2, 3].map((rep) => replyCell(it, rs.find((x) => x.rep === rep))));
+    }));
+    detail.append(el("div", { class: "table-scroll" }, el("table", {},
+      el("thead", {}, el("tr", {}, ["Model", "Prompt", "Rep 1", "Rep 2", "Rep 3"].map((t, i) => el("th", { class: i ? "l" : "" }, t)))), el("tbody", {}, rows))),
+      el("p", { class: "lead" }, "Green: refusal, or a correct answer. Red: an answer to an unanswerable question."));
+  }
+  [kindSel, behaviour].forEach((c) => c.addEventListener("change", renderList));
+  search.addEventListener("input", renderList);
+  renderList(); renderDetail();
+})();
+</script>
+</body>
+</html>

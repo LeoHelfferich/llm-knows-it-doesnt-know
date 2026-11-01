@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Strict vs neutral trade-off</title>
+  <link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<main id="main">
+  <h1>What does the strict prompt buy, and what does it cost?</h1>
+  <p class="lead">Each arrow goes from the neutral prompt to the strict prompt for one model. Left is better on over-refusal, down is better on invention. The bottom-left corner is a model that never invents and never refuses an answerable question.</p>
+</main>
+<script src="assets/app.js"></script>
+<script>
+chrome("tradeoff.html");
+(async () => {
+  const main = document.getElementById("main");
+  const results = await loadResults(main);
+  if (!results) return;
+  runBanner(results).forEach((b) => main.append(b));
+  const host = el("div");
+  main.append(scopeControl(results, scopeFromQuery(results), render), host);
+  render(scopeFromQuery(results));
+
+  function render(scope) {
+    host.replaceChildren();
+    host.append(el("div", { class: "card" }, scatter(scope)));
+    const rows = scope.tradeoffs.map((t) => el("tr", {},
+      el("td", {}, t.model),
+      el("td", {}, pp(t.deltaInvented.value), " ", el("small", {}, rangePp(t.deltaInvented))),
+      el("td", {}, pp(t.deltaOverRefusal.value), " ", el("small", {}, rangePp(t.deltaOverRefusal))),
+      el("td", {}, pp(t.deltaExactMatch.value), " ", el("small", {}, rangePp(t.deltaExactMatch))),
+      el("td", {}, t.inventedAvoidedPerExtraRefusal === null ? "n/a" : t.inventedAvoidedPerExtraRefusal.toFixed(1)),
+      el("td", { class: "l" }, el("span", { class: "tag" }, t.pattern))));
+    host.append(el("h2", {}, "Strict minus neutral, paired by item"), el("div", { class: "table-scroll" }, el("table", {},
+      el("thead", {}, el("tr", {}, ["Model", "Δ invention (unans.)", "Δ over-refusal (ans.)", "Δ exact match (ans.)",
+        "Inventions avoided per extra refusal", "Pattern"].map((t, i) => el("th", { class: i === 5 ? "l" : "" }, t)))),
+      el("tbody", {}, rows))),
+      el("p", { class: "lead" }, "“Inventions avoided per extra refusal” is the drop in the invention rate divided by the rise in the over-refusal rate; it is only defined when invention falls and over-refusal rises. Both sets have the same size, so the ratio is also the number of avoided inventions per additional wrongly refused answerable question. Intervals are 95% bootstrap intervals over items."));
+
+    const bal = scope.cells.map((c) => el("tr", {}, el("td", {}, c.model), el("td", { class: "l" }, c.prompt),
+      el("td", {}, pct(c.abstentionBalancedAccuracy)), el("td", {}, pct(c.inventedMatchesPlausible)),
+      el("td", {}, pct(c.consistency.decisionAgreementUnanswerable)), el("td", {}, pct(c.consistency.decisionAgreementAnswerable)),
+      el("td", {}, pct(c.consistency.fullyConsistentItems))));
+    host.append(el("h2", {}, "Balance and self-consistency"), el("div", { class: "table-scroll" }, el("table", {},
+      el("thead", {}, el("tr", {}, ["Model", "Prompt", "Abstention balanced accuracy", "Invented answer ≈ SQuAD plausible answer",
+        "Same decision, unans.", "Same decision, ans.", "Items with identical decision in all reps"].map((t, i) => el("th", { class: i === 1 ? "l" : "" }, t)))),
+      el("tbody", {}, bal))));
+  }
+  function rangePp(i) { return i && i.lo !== null ? `[${pp(i.lo, 0)}, ${pp(i.hi, 0)}]` : ""; }
+
+  function scatter(scope) {
+    const W = 760, H = 460, m = { top: 16, right: 168, bottom: 48, left: 58 };
+    const w = W - m.left - m.right, h = H - m.top - m.bottom;
+    const maxX = Math.max(0.1, ...scope.cells.map((c) => c.overRefusal.value || 0)) * 1.15;
+    const maxY = Math.max(0.1, ...scope.cells.map((c) => c.invented.value || 0)) * 1.08;
+    const X = (v) => m.left + (v / maxX) * w, Y = (v) => m.top + h - (v / maxY) * h;
+    const svg = svgEl("svg", { viewBox: `0 0 ${W} ${H}`, width: "100%", role: "img", "aria-label": "Invention versus over-refusal" });
+    const defs = svgEl("defs");
+    results.run.models.forEach((model) => {
+      const id = "arrow-" + model.alias.replace(/[^a-z0-9]+/gi, "");
+      defs.append(svgEl("marker", { id, viewBox: "0 0 10 10", refX: 9, refY: 5, markerWidth: 7, markerHeight: 7, orient: "auto-start-reverse" },
+        svgEl("path", { d: "M0 0L10 5L0 10z", fill: MODEL_COLOR[model.alias] || "#444" })));
+    });
+    svg.append(defs);
+    for (let t = 0; t <= 1.0001; t += 0.1) {
+      if (t <= maxX) {
+        svg.append(svgEl("line", { x1: X(t), x2: X(t), y1: m.top, y2: m.top + h, class: "grid" }));
+        svg.append(svgEl("text", { x: X(t), y: m.top + h + 16, "text-anchor": "middle", "font-size": 10 }, Math.round(t * 100) + "%"));
+      }
+      if (t <= maxY) {
+        svg.append(svgEl("line", { x1: m.left, x2: m.left + w, y1: Y(t), y2: Y(t), class: "grid" }));
+        svg.append(svgEl("text", { x: m.left - 8, y: Y(t) + 3, "text-anchor": "end", "font-size": 10 }, Math.round(t * 100) + "%"));
+      }
+    }
+    svg.append(svgEl("text", { x: m.left + w / 2, y: H - 8, "text-anchor": "middle", "font-size": 12 }, "Over-refusal rate on answerable questions"));
+    svg.append(svgEl("text", { transform: `translate(15 ${m.top + h / 2}) rotate(-90)`, "text-anchor": "middle", "font-size": 12 }, "Invented-answer rate on unanswerable questions"));
+
+    const series = results.run.models.map((model) => {
+      const n = cellOf(scope, model.alias, "neutral"), s = cellOf(scope, model.alias, "strict");
+      return { model, n, s, color: MODEL_COLOR[model.alias] || "#444" };
+    }).filter((d) => d.n.invented.value !== null && d.s.invented.value !== null && d.n.overRefusal.value !== null && d.s.overRefusal.value !== null);
+
+    // Several models sit on 0% over-refusal, so a straight arrow is the same line. Shift only the stroke, and keep the dots on the measured rate.
+    const onAxis = series.filter((d) => d.n.overRefusal.value < 0.005 && d.s.overRefusal.value < 0.005);
+    series.forEach((d) => {
+      const slot = onAxis.indexOf(d);
+      // Positive only, so a shifted arrow stays inside the plot instead of covering the y-axis ticks.
+      d.dodge = slot < 0 ? 0 : slot * 9;
+      d.marker = "arrow-" + d.model.alias.replace(/[^a-z0-9]+/gi, "");
+    });
+
+    series.forEach((d) => {
+      svg.append(svgEl("line", {
+        x1: X(d.n.overRefusal.value) + d.dodge, y1: Y(d.n.invented.value),
+        x2: X(d.s.overRefusal.value) + d.dodge, y2: Y(d.s.invented.value),
+        stroke: d.color, "stroke-width": 1.6, "marker-end": `url(#${d.marker})`,
+      }));
+    });
+    series.forEach((d) => {
+      [["neutral", d.n], ["strict", d.s]].forEach(([prompt, cell]) => {
+        const dot = svgEl("circle", {
+          cx: X(cell.overRefusal.value) + d.dodge, cy: Y(cell.invented.value), r: 5,
+          fill: prompt === "strict" ? d.color : "#fff",
+          stroke: d.color, "stroke-width": 2,
+        });
+        dot.append(svgEl("title", {}, `${d.model.alias} (${prompt}): invented ${pct(cell.invented.value)}, over-refusal ${pct(cell.overRefusal.value)}`));
+        svg.append(dot);
+      });
+    });
+
+    const labels = layoutGutterLabels(series.map((d) => ({
+      text: d.model.alias,
+      ax: X(d.n.overRefusal.value) + d.dodge,
+      ay: Y(d.n.invented.value),
+      color: d.color,
+    })), { left: m.left + w + 18, top: m.top, bottom: m.top + h });
+    labels.forEach((l) => {
+      svg.append(svgEl("line", {
+        x1: l.ax + 7, y1: l.ay, x2: l.x - 4, y2: l.y - 3,
+        stroke: l.color, "stroke-width": 0.8, "stroke-opacity": 0.55,
+      }));
+      svg.append(svgEl("text", {
+        x: l.x, y: l.y, "font-size": 12, fill: l.color,
+        stroke: "#fff", "stroke-width": 3, "paint-order": "stroke",
+      }, l.text));
+    });
+
+    const legend = el("div", { class: "legend" },
+      ...results.run.models.map((model) => el("span", {},
+        el("i", { style: `background:${MODEL_COLOR[model.alias] || "#444"}` }), model.alias)),
+      el("span", {}, "open circle: neutral prompt, filled circle: strict prompt"));
+    const note = el("p", { class: "lead" },
+      "Names sit beside the plot, each lined up with its neutral point. Models at 0% over-refusal are drawn a few pixels apart so each color stays visible; hover a circle for the measured rates.");
+    return el("div", {}, legend, svg, note);
+  }
+})();
+</script>
+</body>
+</html>
