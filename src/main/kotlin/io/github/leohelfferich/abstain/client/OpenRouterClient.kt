@@ -77,6 +77,10 @@ class OpenRouterClient(
         }
     }
 
+    /**
+     * The JSON body. `temperature` is omitted when the model does not accept it.
+     * `reasoning` is omitted when the model has none. `usage.include` asks OpenRouter for the cost.
+     */
     fun buildBody(request: ChatRequest): JsonObject = buildJsonObject {
         put("model", request.model.openRouterId)
         put("messages", buildJsonArray {
@@ -96,6 +100,22 @@ class OpenRouterClient(
     /**
      * Sends the completion, retrying transient failures with exponential backoff.
      * [maxRetries] is the number of retries after the first attempt, so a budget of 2 is three sends.
+     *
+     * ```
+     * attempt 0 .. maxRetries
+     *   |
+     *   +-- awaitGate
+     *   |     every caller waits out a shared pause, so a 429 is not retried in parallel
+     *   +-- POST {baseUrl}/chat/completions
+     *   |
+     *   +-- 2xx ---------------------> parse choices[0].message and usage
+     *   |     content may be a string or an array of {text} parts
+     *   +-- 408, 429, 5xx, timeout, IO
+     *   |     429 also pushes notBeforeMs (at most 30s ahead)
+     *   |     then sleep backoffMillis x 2^attempt, and retry
+     *   +-- other 4xx ---------------> throw, not retryable
+     *                                  401 / 402 / 403 make the runner stop
+     * ```
      */
     override fun complete(request: ChatRequest): ChatResult {
         val body = CompactJson.encodeToString(JsonObject.serializer(), buildBody(request))

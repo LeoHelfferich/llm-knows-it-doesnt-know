@@ -14,12 +14,32 @@ import io.github.leohelfferich.abstain.cost.model.ObservedUsage
 
 /**
  * Turns the sample, the prompt templates, and the pricing snapshot into a cost estimate.
- *
- * Expected cost uses assumed or previously observed tokens. Pessimistic cost inflates input and
- * output. Ceiling cost pretends every call uses the full output budget. The ceiling is a bound,
- * not a prediction.
+ * Nothing is called. The three columns are on [estimate].
  */
 object Estimator {
+    /**
+     * Cost of [label] at three levels of caution.
+     *
+     * ```
+     * calls per model = items x prompt variants x reps
+     *
+     * input tokens
+     *   no observation --> mean prompt chars / config.charsPerToken
+     *   from a run     --> mean prompt chars x (observed prompt tokens / prompt chars)
+     * output tokens
+     *   no observation --> assumedAnswerTokens + the model's assumedReasoningTokens
+     *   from a run     --> mean observed completion tokens per call
+     *
+     * expected     = calls x (input x in-price + output x out-price)
+     * pessimistic  = input x PESSIMISTIC_INPUT_FACTOR (1.2)
+     *                output x PESSIMISTIC_OUTPUT_FACTOR (3)
+     * ceiling      = input priced at one token per two characters
+     *                output priced at maxTokens
+     *                a bound, not a prediction
+     *
+     * fits the cap when the EUR total stays under cap minus the safety margin
+     * ```
+     */
     fun estimate(
         label: String,
         items: List<Item>,

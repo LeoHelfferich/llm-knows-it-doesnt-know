@@ -4,7 +4,7 @@
 
 This is the sequel in an article series by Leo Helfferich. Part 1 is [`llm-judges-and-trust`](https://github.com/LeoHelfferich/llm-judges-and-trust). The repository follows the same approach: Kotlin/JVM + Gradle + JUnit, all model calls through [OpenRouter](https://openrouter.ai), a run manifest, a cost estimate before any paid run, a hard EUR 10 cap, results committed as data, and static HTML pages under `docs/` that load the real result JSON.
 
-> **Status:** code, tests, sample and pricing snapshot are in place. **No paid call has been made yet**, so there are no results and `docs/data/` is empty. The pages show an explicit "no results yet" notice until `analyze` has produced `results.json`.
+> **Status:** the full run is published. On 2026-10-27, 6,000 of 6,000 calls succeeded (EUR 1.26, under a runtime cap of EUR 5). `docs/data/results.json` and `docs/data/items.json` are what `analyze` computes from `data/runs/full/`. The manifest records no git commit: `git rev-parse` did not succeed where the calls were made. Re-running `analyze` on this repository regenerates those files from the committed calls.
 
 ## Research question
 
@@ -15,7 +15,7 @@ When the answer is **not** in the provided passage, how often does a model inven
 Requirements: JDK 21 (the Gradle toolchain is pinned to 21). Nothing else; the wrapper downloads Gradle.
 
 ```bash
-./gradlew test                                  # 90 tests, fake client, no key, no OpenRouter calls
+./gradlew test                                  # 92 tests, fake client, no key, no OpenRouter calls; one skips until fetch-data
 ./gradlew run --args="estimate"                 # expected calls and cost, no key needed
 ./gradlew run --args="run --dry-run --mock"     # offline pipeline check with synthetic answers
 ```
@@ -42,6 +42,8 @@ Exit codes: `0` ok, `1` runtime failure or refusal (for example cost), `2` usage
 
 ## Reproduction steps
 
+The published calls are already in `data/runs/full/` and `data/runs/dry-run/`. `analyze` only reads them. The steps below are how that run was produced, and how to produce another one.
+
 ```bash
 # 1. Data and sample (public data only)
 ./gradlew run --args="fetch-data"
@@ -52,12 +54,12 @@ Exit codes: `0` ok, `1` runtime failure or refusal (for example cost), `2` usage
 
 # 3. Dry run: 100 calls, about EUR 0.07 expected
 export OPENROUTER_API_KEY=...               # read from the environment only
-./gradlew run --args="run --dry-run"
+./gradlew run --args="run --dry-run --cap-eur 0.5"             # the published dry run used this cap
 ./gradlew run --args="analyze --run data/runs/dry-run"        # sanity check, not published
 ./gradlew run --args="estimate --from-run data/runs/dry-run"  # estimate recalibrated on real token counts
 
 # 4. Full run: 6000 calls, resumable
-./gradlew run --args="run"
+./gradlew run --args="run --cap-eur 5"      # the published full run used this cap; config allows up to 10
 ./gradlew run --args="analyze"              # writes docs/data/results.json + items.json
 
 # 5. Manual review (see below), then re-run analyze
@@ -65,7 +67,7 @@ export OPENROUTER_API_KEY=...               # read from the environment only
 
 `run` is **resumable**: every call is appended to `data/runs/<id>/calls.jsonl` as soon as it finishes. If it stops (cap, network, Ctrl-C), start the same command again; finished calls are never repeated or paid twice, failed ones are retried. A run directory is bound to its configuration, sample and prompts by a fingerprint; changing any of them requires a new `--run-id`, results are never overwritten.
 
-To look at the pages locally: `cd docs && python3 -m http.server`, then open <http://localhost:8000>. (They fetch JSON, so `file://` does not work.)
+The pages are static files in `docs/`. They fetch JSON, so opening them as `file://` or as a file on github.com shows the source and no charts. Locally: `cd docs && python3 -m http.server`, then open <http://localhost:8000>. On GitHub, set Pages to the `main` branch and the `/docs` folder. `docs/.nojekyll` is there so Jekyll does not touch the JSON.
 
 ## Method
 
@@ -100,7 +102,7 @@ Notes:
 - Ids are floating aliases on OpenRouter. The manifest records the id, the canonical slug at run time and, per call, the provider and the model name OpenRouter reports, so a later change is visible.
 - A test asserts that `sendTemperature` in the config equals OpenRouter's `supported_parameters` for every model.
 - "Hidden" means `reasoning.exclude = true`: reasoning tokens are still produced and billed but not returned. Reasoning effort is set to `none` for the three models that reason by default, the same setting as part 1, to keep cost predictable and the series comparable; this is a deviation from "provider defaults" and is recorded in every manifest.
-- Provider routing is left to OpenRouter (no pinning); the serving provider is stored with each call.
+- Provider routing is left to OpenRouter (no pinning); the serving provider is stored with each call. In the published run, Llama 3.3 70B was a mixture of eight hosts (DeepInfra 381, AkashML 360, Novita 224, Parasail 134, Cloudflare 45, SambaNova 26, Groq 17, CoreWeave 13). Grok 4.3 (xAI) and Gemini 2.5 Flash (Google AI Studio) were each one host. GPT-5.4 Mini was OpenAI for 1,198 calls and Azure for 2. Claude Haiku 4.5 was Amazon Bedrock for 1,199 calls and Azure for 1. The result pages list this from the call log. A Llama bar is that mixture, not one deployment.
 
 ### Prompts
 
@@ -164,7 +166,7 @@ Rates are computed per item first (mean over its repetitions) and then averaged 
 | **Over-refusal rate** | Share of replies to *answerable* questions that are an abstention. |
 | **Exact match / F1** | Official SQuAD normalization (lowercase, strip ASCII punctuation, drop a/an/the, collapse whitespace), maximum over gold answers, on *answerable* questions. A refusal or empty reply scores 0. `EM if answered` conditions on the model having answered. |
 | **Self-consistency** | Across the 3 repetitions of an item: *decision agreement* = mean pairwise agreement of answer / abstain / empty; *items with identical decision* = share where all reps agree; *answer agreement* = share of pairs of answers (both answered) that are equal after normalization. Reported overall and per item kind. |
-| **Strict vs neutral** | Per model, strict minus neutral, **paired by item**: change in invention rate, over-refusal rate, EM and F1, each with a bootstrap interval; *inventions avoided per extra refusal* = invention drop divided by over-refusal rise (defined only when invention falls and over-refusal rises; both sets have 100 items so this is a count ratio); a `pattern` label (`trade-off`, `invention-down-without-clear-over-refusal`, `over-refusal-up-without-clear-invention-drop`, `no-clear-effect`) decided by whether the interval of each difference excludes 0. |
+| **Strict vs neutral** | Per model, strict minus neutral, **paired by item**: change in invention rate, over-refusal rate, EM and F1, each with a bootstrap interval; *inventions avoided per extra refusal* = invention drop divided by over-refusal rise (both sets have the same size, so this is a count ratio). The ratio has no interval of its own, and the pages show it only when both intervals exclude zero. In the published run that is Grok 4.3 only; a rise of a few points makes the ratio swing, so quote the percentage-point changes. A `pattern` label (`trade-off`, `invention-down-without-clear-over-refusal`, `over-refusal-up-without-clear-invention-drop`, `no-clear-effect`) is decided by whether the interval of each difference excludes 0. |
 | Extras | Abstention balanced accuracy = mean of (1 - invention) and (1 - over-refusal); share of invented answers that match SQuAD's own `plausible_answers` (F1 >= 0.5), i.e. the model was lured by the annotators' decoy; empty, format-violation and ambiguous counts; cost and mean completion tokens. |
 
 ### Manual review and disputed items
@@ -175,20 +177,23 @@ SQuAD 2.0 contains annotation errors, so the experiment has a built-in review lo
 2. Inspect them in `docs/items.html` (filters: "Invented even under strict prompt", "Refused under strict prompt", "Decision changed between reps", "Marked disputed").
 3. Copy the ids you confirm into `data/disputed.json` with a reason and re-run `analyze`.
 
-`results.json` always contains two scopes computed from the same raw calls: `all` and `excludingDisputed`. Both are shown on the pages (selector at the top). Nothing is ever deleted from the raw data.
+`results.json` always contains two scopes computed from the same raw calls: `all` and `excludingDisputed`. Both are shown on the pages (selector at the top). The default is `all`. Nothing is ever deleted from the raw data.
+
+The published `data/disputed.json` excludes two unanswerable items, both label errors, checked against the passage: a one-character typo (UGSS for USGS), and a question whose answer (Japan) is stated in the sentence. Every other item on which all five models answered under the strict prompt stays in. On those, the passage does not state the answer the question actually asks. That is the SQuAD 2.0 trap, not a wrong label. The steam question about what had "superseded power" is one of them: it does not ask what the passage says, and GPT-5.4 Mini abstained.
 
 ## Cost control
 
 - `estimate` prints expected calls and cost for the full run and the dry run. Token counts are assumed (about 3.5 characters per token of the actual rendered prompts; 12 answer tokens; plus 200 to 250 hidden reasoning tokens for the three reasoning models) until `--from-run` replaces them with observed values. Three scenarios: *expected*, *pessimistic* (3x output, 1.2x input) and *ceiling* (every call uses all 1,024 output tokens; only a bound).
 - Prices come from the OpenRouter public list (committed snapshot, USD per token). The conversion is `eurPerUsd = 1.00` in `config/experiment.json`, deliberately conservative as long as the euro trades above the dollar (reported EUR figures then overstate); lower it only if you have checked the current rate.
-- Estimate at the time of writing, with the committed snapshot of 2026-10-27:
+- Before any calls, with assumed token counts and the committed snapshot of 2026-10-27, `estimate` prints:
 
 | Run | Calls | Expected | Pessimistic | Ceiling |
 |---|---|---|---|---|
 | Dry run | 100 | EUR 0.07 | EUR 0.17 | EUR 0.35 |
 | Full run | 6,000 | EUR 4.11 | EUR 9.97 | EUR 20.52 |
 
-  Per model for the full run (expected): grok-4.3 EUR 1.27, gpt-5.4-mini EUR 1.44, claude-haiku-4.5 EUR 0.46, gemini-2.5-flash EUR 0.90, llama-3.3-70b EUR 0.04.
+- The published full run was estimated again from the dry run's token counts, then executed with `--cap-eur 5` (the dry run used `--cap-eur 0.5`). `config/experiment.json` still says 10, which is the ceiling; `--cap-eur` can only lower it, and the manifest records the cap that was in force. Calibrated estimate: expected EUR 1.40, pessimistic EUR 1.99, ceiling EUR 20.52. Spent: **EUR 1.26** for 6,000 successful calls (grok-4.3 0.40, claude-haiku-4.5 0.42, gpt-5.4-mini 0.28, gemini-2.5-flash 0.11, llama-3.3-70b 0.06). Reported euros equal reported dollars because `eurPerUsd` is 1.00.
+- All 1,886 extra attempts were HTTP 429s, OpenRouter's per-minute limit on GPT-5.4 Mini (970) and Claude Haiku 4.5 (916). Each was retried. No planned call is missing. The raw errors are in `data/runs/full/failed-attempts.jsonl`.
 - **Hard cap EUR 10.00 across all real runs together** (`HARD_CAP_EUR` in code; the config and `--cap-eur` can only lower it). `run` refuses to start if the expected cost plus what `data/runs/` already shows as spent does not fit under the cap minus a EUR 0.25 safety margin, and asks for confirmation (`yes`, or `--yes`) before the first paid call.
 - While running, every call first *reserves* its worst case (prompt size bound + `max_tokens` at the model's price); it is only sent if spent + reserved + worst case stays within the usable budget. The runner therefore stops by itself before the cap is crossed, even with 8 parallel workers. Cost per call is the figure OpenRouter reports (`usage.cost`), falling back to token counts times price. Calls run repetition by repetition, so a stop leaves complete repetition sets. The margin covers requests that time out client-side yet get billed.
 - 401, 402 and 403 responses abort the run immediately; 20 consecutive failures abort it too. 429 and 5xx responses are retried with backoff inside the client.
@@ -209,14 +214,14 @@ data/runs/<id>/{manifest.json,calls.jsonl}          raw results of each run (com
 docs/                                               static pages (index, trade-off, items, method) + docs/data/*.json
 src/main/kotlin/.../                                Model, Prompts, ResponseParser, SquadMetrics, Squad(Sampler), Client (OpenRouter),
                                                     Pricing, Cost, Runner, Analyzer, Simulator, Main
-src/test/kotlin/.../                                84 tests; fake/mock clients and a local HTTP server, no network, no key
+src/test/kotlin/.../                                92 tests; fake/mock clients and a local HTTP server, no network, no key. One sampler test skips until `fetch-data` has downloaded SQuAD.
 ```
 
 The run manifest (`data/runs/<id>/manifest.json`) records: run id and kind, mock flag, status and stop reason, start and end time, git commit and dirty flag, JDK, a fingerprint of config + items + prompts + prices, SHA-256 of the config file, sample and source dataset, seed, repetitions, temperature, max tokens, prompt template hashes and versions, per-model id / canonical slug / prices / temperature sent / reasoning settings, planned, ok and failed call counts, money spent, the cap and the pre-run estimate.
 
 ## Limitations and deviations
 
-- Temperature (0) and reasoning effort (`none`) were aligned with part 1 after the repository was built. Part 1 also pinned Llama 3.3 70B to the DeepInfra route; this repository does not pin a provider (the provider used is recorded per call).
+- Temperature (0) and reasoning effort (`none`) were aligned with part 1 after the repository was built. Part 1 pinned Llama 3.3 70B to the DeepInfra route. This run did not, so the Llama number is the eight-host mixture listed under Models, not a DeepInfra result. The provider of every call is in `calls.jsonl` and on the method page.
 - Reasoning effort is `none` for Grok 4.3, GPT-5.4 Mini and Gemini 2.5 Flash, as in part 1. A model that reasons by default and is told not to may behave differently from its default setting.
 - Abstention in the neutral prompt is detected by a wording rule, not by the sentinel, so neutral-prompt refusals are somewhat less certain than strict-prompt refusals. Sentinel and phrase abstentions are reported separately for that reason.
 - 100 + 100 items give intervals of a few percentage points, wide enough that small model differences are not significant. Only items, not repetitions, are resampled.

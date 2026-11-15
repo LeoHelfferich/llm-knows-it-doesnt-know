@@ -29,6 +29,24 @@ class SimulatedChatClient(items: List<Item>, private val models: List<ModelConfi
         )
     }
 
+    /**
+     * One synthetic reply. The seed is the first 15 hex chars of SHA-256(item|model|prompt|rep).
+     *
+     * ```
+     * profile slides with the model's index in the config, so the five models differ
+     *
+     * unanswerable
+     *   roll < invent rate --> "ANSWER: <a plausible span, or a made-up phrase>"
+     *   else               --> NOT_IN_CONTEXT if strict, else a short refusal sentence
+     *
+     * answerable
+     *   roll < refuse rate --> the same abstention
+     *   else roll < skill  --> "ANSWER: <first gold>"
+     *   else               --> "ANSWER: something else <n>"
+     * ```
+     *
+     * Cost is reported as 0. The runner still reserves a worst case, then settles it to zero.
+     */
     override fun complete(request: ChatRequest): ChatResult {
         val item = byId.getValue(requireNotNull(request.itemId))
         val variant = requireNotNull(request.variant)

@@ -44,6 +44,26 @@ import io.github.leohelfferich.abstain.execution.model.RunSummary
  * Finished calls are skipped. Failed calls are retried. The directory is locked so two processes
  * cannot spend the same budget, and a fingerprint check refuses to append to a directory whose
  * configuration, sample, or prompts have changed.
+ *
+ * ```
+ * execute
+ *   |
+ *   +-- lock <run>/.lock                 a second process errors; nothing is sent
+ *   |
+ *   v
+ * runLocked
+ *   |
+ *   +-- fingerprint must match any manifest.json already in the directory
+ *   +-- plan = repetition x item x model x prompt
+ *   |   drop keys that already have status=ok in calls.jsonl
+ *   +-- workers (see runLocked)
+ *   |
+ *   v
+ * manifest.json is rewritten from the call log
+ *   every planned key ok --------> complete
+ *   a stop reason was recorded --> stopped
+ *   otherwise ------------------> incomplete (the same command retries the failures)
+ * ```
  */
 class Runner(
     private val config: ExperimentConfig,
@@ -57,6 +77,10 @@ class Runner(
 ) {
     private data class Task(val item: Item, val model: ModelConfig, val variant: PromptVariant, val rep: Int, val prompt: String)
 
+    /**
+     * Hash of everything that would make a resumed directory mean a different experiment:
+     * the config JSON, the item ids, the repetition count, both prompt-template hashes, and the prices.
+     */
     fun fingerprint(spec: RunSpec): String = sha256Hex(
         buildString {
             append(PrettyJson.encodeToString(ExperimentConfig.serializer(), config)).append('\n')
@@ -79,6 +103,10 @@ class Runner(
             }
         }
 
+    /**
+     * Holds the directory lock for the whole run, then [runLocked].
+     * A lock already held in this JVM or another process is "already in progress", not a second spend.
+     */
     fun execute(spec: RunSpec, estimate: Estimate?): RunSummary {
         config.validate()
         Files.createDirectories(spec.dir)
@@ -99,6 +127,30 @@ class Runner(
         }
     }
 
+    /**
+     * The calls still to do, under the cap.
+     *
+     * ```
+     * one pending task, on the pool
+     *   |
+     *   +-- stop flag set ---------------------> skip
+     *   |
+     *   +-- tryReserve(worst-case USD) fails --> stop: cap. The call is not sent.
+     *   |
+     *   v
+     * client.complete
+     *   | ok                              | ChatException
+     *   | payableUsd(reported,            +-- 401 / 402 / 403 --------> stop
+     *   |   computed, worst)              +-- 20 failures in a row ---> stop
+     *   |                                 +-- anything else ----------> error record
+     *   |                                                              (retried on the next launch)
+     *   v
+     * append calls.jsonl, then settle(worst, actual)
+     *   a crash between those two keeps the reservation, so the cap cannot forget the call
+     * ```
+     *
+     * Repetitions are the outer loop of [plan], so a stop leaves finished repetitions behind.
+     */
     private fun runLocked(spec: RunSpec, estimate: Estimate?): RunSummary {
         val fingerprint = fingerprint(spec)
         val manifestFile = spec.dir.resolve("manifest.json")

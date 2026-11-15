@@ -90,7 +90,82 @@
     "okCalls": 6000,
     "errorCalls": 1886,
     "spentEur": 1.2613678769999965,
-    "capEur": 5.0
+    "capEur": 5.0,
+    "servingProviders": [
+      {
+        "model": "grok-4.3",
+        "provider": "xAI",
+        "calls": 1200
+      },
+      {
+        "model": "gpt-5.4-mini",
+        "provider": "OpenAI",
+        "calls": 1198
+      },
+      {
+        "model": "gpt-5.4-mini",
+        "provider": "Azure",
+        "calls": 2
+      },
+      {
+        "model": "claude-haiku-4.5",
+        "provider": "Amazon Bedrock",
+        "calls": 1199
+      },
+      {
+        "model": "claude-haiku-4.5",
+        "provider": "Azure",
+        "calls": 1
+      },
+      {
+        "model": "gemini-2.5-flash",
+        "provider": "Google AI Studio",
+        "calls": 1200
+      },
+      {
+        "model": "llama-3.3-70b",
+        "provider": "DeepInfra",
+        "calls": 381
+      },
+      {
+        "model": "llama-3.3-70b",
+        "provider": "AkashML",
+        "calls": 360
+      },
+      {
+        "model": "llama-3.3-70b",
+        "provider": "Novita",
+        "calls": 224
+      },
+      {
+        "model": "llama-3.3-70b",
+        "provider": "Parasail",
+        "calls": 134
+      },
+      {
+        "model": "llama-3.3-70b",
+        "provider": "Cloudflare",
+        "calls": 45
+      },
+      {
+        "model": "llama-3.3-70b",
+        "provider": "SambaNova",
+        "calls": 26
+      },
+      {
+        "model": "llama-3.3-70b",
+        "provider": "Groq",
+        "calls": 17
+      },
+      {
+        "model": "llama-3.3-70b",
+        "provider": "CoreWeave",
+        "calls": 13
+      }
+    ],
+    "failedAttemptCounts": {
+      "429": 1886
+    }
   },
   "sample": {
     "seed": 2026,
@@ -109,18 +184,13 @@
   "disputed": [
     {
       "id": "5ad03d2277cf76001a686ecf",
-      "reason": "Only perturbation is the typo 'UGSS' for USGS; the passage states the USGS forecast 'models Earthquake occurrence in California', so the question is answerable.",
-      "reviewer": "Grok Bot (manual review of the full run, 2026-10-27)"
+      "reason": "The only change from the passage is the typo UGSS for USGS. The passage states that the USGS California Earthquake forecast models earthquake occurrence in California, so the question is answerable.",
+      "reviewer": "Leo Helfferich"
     },
     {
       "id": "5a7504cb97ca42001a521dc4",
-      "reason": "Passage: 'Some European nations and Japan sought to disassociate themselves from United States foreign policy ... to avoid being targeted by the boycott.' The answer Japan is stated directly; all 15 strict replies gave it.",
-      "reviewer": "Grok Bot (manual review of the full run, 2026-10-27)"
-    },
-    {
-      "id": "5ad3c3bc604f3c001a3fefa0",
-      "reason": "Passage: 'steam has been largely superseded by internal combustion engines or electric motors'. 'Superseded power' is a loose rewording of superseded steam power, not a meaning-changing perturbation; electric motors is stated.",
-      "reviewer": "Grok Bot (manual review of the full run, 2026-10-27)"
+      "reason": "The passage states the answer directly: 'Some European nations and Japan sought to disassociate themselves from United States foreign policy in the Middle East to avoid being targeted by the boycott.'",
+      "reviewer": "Leo Helfferich"
     }
   ],
   "scopes": [
@@ -721,21 +791,21 @@
     },
     {
       "name": "excludingDisputed",
-      "excludedItems": 3,
-      "unanswerableItems": 97,
+      "excludedItems": 2,
+      "unanswerableItems": 98,
       "answerableItems": 100,
       "cells": [
         {
           "model": "grok-4.3",
           "prompt": "neutral",
-          "unanswerableItems": 97,
+          "unanswerableItems": 98,
           "answerableItems": 100,
-          "unanswerableCalls": 291,
+          "unanswerableCalls": 294,
           "answerableCalls": 300,
           "invented": {
-            "value": 0.934707903780069,
-            "lo": 0.8831615120274913,
-            "hi": 0.9759450171821307
+            "value": 0.9353741496598641,
+            "lo": 0.8809523809523809,
+            "hi": 0.9761904761904763
           },
           "overRefusal": {
             "value": 0.0,
@@ -754,34 +824,34 @@
           },
           "exactMatchWhenAnswered": 0.69,
           "f1WhenAnswered": 0.865965180774391,
-          "abstentionBalancedAccuracy": 0.5326460481099655,
-          "inventedMatchesPlausible": 0.4485294117647059,
+          "abstentionBalancedAccuracy": 0.532312925170068,
+          "inventedMatchesPlausible": 0.45454545454545453,
           "sentinelAbstentions": 0,
           "phraseAbstentions": 19,
           "emptyCalls": 0,
           "formatViolations": 0,
           "ambiguousCalls": 0,
           "consistency": {
-            "decisionAgreement": 0.9898477157360406,
-            "decisionAgreementUnanswerable": 0.979381443298969,
+            "decisionAgreement": 0.98989898989899,
+            "decisionAgreementUnanswerable": 0.9795918367346939,
             "decisionAgreementAnswerable": 1.0,
-            "fullyConsistentItems": 0.9847715736040609,
-            "answerAgreement": 0.9209138840070299
+            "fullyConsistentItems": 0.9848484848484849,
+            "answerAgreement": 0.9213286713286714
           },
-          "costUsd": 0.18832050000000006,
-          "meanCompletionTokens": 8.182741116751268
+          "costUsd": 0.18912165000000006,
+          "meanCompletionTokens": 8.16161616161616
         },
         {
           "model": "grok-4.3",
           "prompt": "strict",
-          "unanswerableItems": 97,
+          "unanswerableItems": 98,
           "answerableItems": 100,
-          "unanswerableCalls": 291,
+          "unanswerableCalls": 294,
           "answerableCalls": 300,
           "invented": {
-            "value": 0.17525773195876293,
-            "lo": 0.10652920962199311,
-            "hi": 0.2508591065292096
+            "value": 0.18367346938775514,
+            "lo": 0.11564625850340136,
+            "hi": 0.25510204081632654
           },
           "overRefusal": {
             "value": 0.04333333333333333,
@@ -800,34 +870,34 @@
           },
           "exactMatchWhenAnswered": 0.7526132404181185,
           "f1WhenAnswered": 0.8839117366831469,
-          "abstentionBalancedAccuracy": 0.8907044673539519,
-          "inventedMatchesPlausible": 0.5686274509803921,
+          "abstentionBalancedAccuracy": 0.8864965986394557,
+          "inventedMatchesPlausible": 0.5925925925925926,
           "sentinelAbstentions": 253,
           "phraseAbstentions": 0,
           "emptyCalls": 0,
           "formatViolations": 0,
           "ambiguousCalls": 0,
           "consistency": {
-            "decisionAgreement": 0.976311336717428,
-            "decisionAgreementUnanswerable": 0.958762886597938,
+            "decisionAgreement": 0.9764309764309763,
+            "decisionAgreementUnanswerable": 0.9591836734693876,
             "decisionAgreementAnswerable": 0.9933333333333333,
-            "fullyConsistentItems": 0.9644670050761421,
-            "answerAgreement": 0.9486404833836858
+            "fullyConsistentItems": 0.9646464646464646,
+            "answerAgreement": 0.9491017964071856
           },
-          "costUsd": 0.2063283500000002,
-          "meanCompletionTokens": 5.5972927241962775
+          "costUsd": 0.2073651500000002,
+          "meanCompletionTokens": 5.589225589225589
         },
         {
           "model": "gpt-5.4-mini",
           "prompt": "neutral",
-          "unanswerableItems": 97,
+          "unanswerableItems": 98,
           "answerableItems": 100,
-          "unanswerableCalls": 291,
+          "unanswerableCalls": 294,
           "answerableCalls": 300,
           "invented": {
-            "value": 0.9415807560137458,
-            "lo": 0.8969072164948454,
-            "hi": 0.979381443298969
+            "value": 0.9421768707482994,
+            "lo": 0.8979591836734693,
+            "hi": 0.9795918367346939
           },
           "overRefusal": {
             "value": 0.0,
@@ -846,34 +916,34 @@
           },
           "exactMatchWhenAnswered": 0.67,
           "f1WhenAnswered": 0.8970063732563734,
-          "abstentionBalancedAccuracy": 0.529209621993127,
-          "inventedMatchesPlausible": 0.5693430656934306,
+          "abstentionBalancedAccuracy": 0.5289115646258503,
+          "inventedMatchesPlausible": 0.5740072202166066,
           "sentinelAbstentions": 0,
           "phraseAbstentions": 17,
           "emptyCalls": 0,
           "formatViolations": 0,
           "ambiguousCalls": 0,
           "consistency": {
-            "decisionAgreement": 0.9898477157360406,
-            "decisionAgreementUnanswerable": 0.979381443298969,
+            "decisionAgreement": 0.98989898989899,
+            "decisionAgreementUnanswerable": 0.9795918367346939,
             "decisionAgreementAnswerable": 1.0,
-            "fullyConsistentItems": 0.9847715736040609,
-            "answerAgreement": 0.7968476357267951
+            "fullyConsistentItems": 0.9848484848484849,
+            "answerAgreement": 0.7979094076655052
           },
-          "costUsd": 0.13126950000000023,
-          "meanCompletionTokens": 11.846023688663282
+          "costUsd": 0.1317667500000002,
+          "meanCompletionTokens": 11.826599326599327
         },
         {
           "model": "gpt-5.4-mini",
           "prompt": "strict",
-          "unanswerableItems": 97,
+          "unanswerableItems": 98,
           "answerableItems": 100,
-          "unanswerableCalls": 291,
+          "unanswerableCalls": 294,
           "answerableCalls": 300,
           "invented": {
-            "value": 0.5120274914089347,
-            "lo": 0.4192439862542955,
-            "hi": 0.6048109965635738
+            "value": 0.5136054421768707,
+            "lo": 0.4217687074829932,
+            "hi": 0.6054421768707483
           },
           "overRefusal": {
             "value": 0.0,
@@ -892,34 +962,34 @@
           },
           "exactMatchWhenAnswered": 0.6866666666666666,
           "f1WhenAnswered": 0.9046358363858368,
-          "abstentionBalancedAccuracy": 0.7439862542955327,
-          "inventedMatchesPlausible": 0.610738255033557,
-          "sentinelAbstentions": 141,
+          "abstentionBalancedAccuracy": 0.7431972789115646,
+          "inventedMatchesPlausible": 0.6158940397350994,
+          "sentinelAbstentions": 142,
           "phraseAbstentions": 1,
           "emptyCalls": 0,
           "formatViolations": 0,
           "ambiguousCalls": 0,
           "consistency": {
-            "decisionAgreement": 0.949238578680203,
-            "decisionAgreementUnanswerable": 0.8969072164948455,
+            "decisionAgreement": 0.9461279461279462,
+            "decisionAgreementUnanswerable": 0.8911564625850341,
             "decisionAgreementAnswerable": 1.0,
-            "fullyConsistentItems": 0.9238578680203046,
-            "answerAgreement": 0.8640552995391705
+            "fullyConsistentItems": 0.9191919191919192,
+            "answerAgreement": 0.864367816091954
           },
-          "costUsd": 0.1409377500000003,
-          "meanCompletionTokens": 10.981387478849408
+          "costUsd": 0.14149125000000032,
+          "meanCompletionTokens": 10.964646464646465
         },
         {
           "model": "claude-haiku-4.5",
           "prompt": "neutral",
-          "unanswerableItems": 97,
+          "unanswerableItems": 98,
           "answerableItems": 100,
-          "unanswerableCalls": 291,
+          "unanswerableCalls": 294,
           "answerableCalls": 300,
           "invented": {
-            "value": 0.6597938144329897,
-            "lo": 0.5670103092783505,
-            "hi": 0.7525773195876289
+            "value": 0.6632653061224489,
+            "lo": 0.5714285714285714,
+            "hi": 0.7551020408163265
           },
           "overRefusal": {
             "value": 0.0,
@@ -938,8 +1008,8 @@
           },
           "exactMatchWhenAnswered": 0.56,
           "f1WhenAnswered": 0.8139833426858322,
-          "abstentionBalancedAccuracy": 0.6701030927835052,
-          "inventedMatchesPlausible": 0.3229166666666667,
+          "abstentionBalancedAccuracy": 0.6683673469387755,
+          "inventedMatchesPlausible": 0.3333333333333333,
           "sentinelAbstentions": 0,
           "phraseAbstentions": 99,
           "emptyCalls": 0,
@@ -950,22 +1020,22 @@
             "decisionAgreementUnanswerable": 1.0,
             "decisionAgreementAnswerable": 1.0,
             "fullyConsistentItems": 1.0,
-            "answerAgreement": 0.9552845528455285
+            "answerAgreement": 0.9555555555555556
           },
-          "costUsd": 0.20706599999999992,
-          "meanCompletionTokens": 20.538071065989847
+          "costUsd": 0.20776199999999995,
+          "meanCompletionTokens": 20.474747474747474
         },
         {
           "model": "claude-haiku-4.5",
           "prompt": "strict",
-          "unanswerableItems": 97,
+          "unanswerableItems": 98,
           "answerableItems": 100,
-          "unanswerableCalls": 291,
+          "unanswerableCalls": 294,
           "answerableCalls": 300,
           "invented": {
-            "value": 0.24054982817869414,
-            "lo": 0.16151202749140892,
-            "hi": 0.32989690721649484
+            "value": 0.24829931972789115,
+            "lo": 0.16326530612244897,
+            "hi": 0.34013605442176875
           },
           "overRefusal": {
             "value": 0.0,
@@ -984,34 +1054,34 @@
           },
           "exactMatchWhenAnswered": 0.53,
           "f1WhenAnswered": 0.8087625704103261,
-          "abstentionBalancedAccuracy": 0.8797250859106529,
-          "inventedMatchesPlausible": 0.6142857142857143,
+          "abstentionBalancedAccuracy": 0.8758503401360545,
+          "inventedMatchesPlausible": 0.6301369863013698,
           "sentinelAbstentions": 221,
           "phraseAbstentions": 0,
           "emptyCalls": 0,
           "formatViolations": 9,
           "ambiguousCalls": 0,
           "consistency": {
-            "decisionAgreement": 0.9966159052453468,
-            "decisionAgreementUnanswerable": 0.9931271477663229,
+            "decisionAgreement": 0.9966329966329965,
+            "decisionAgreementUnanswerable": 0.9931972789115646,
             "decisionAgreementAnswerable": 1.0,
-            "fullyConsistentItems": 0.9949238578680203,
-            "answerAgreement": 0.978319783197832
+            "fullyConsistentItems": 0.9949494949494949,
+            "answerAgreement": 0.978494623655914
           },
-          "costUsd": 0.20734500000000014,
-          "meanCompletionTokens": 13.83248730964467
+          "costUsd": 0.20814300000000013,
+          "meanCompletionTokens": 13.803030303030303
         },
         {
           "model": "gemini-2.5-flash",
           "prompt": "neutral",
-          "unanswerableItems": 97,
+          "unanswerableItems": 98,
           "answerableItems": 100,
-          "unanswerableCalls": 291,
+          "unanswerableCalls": 294,
           "answerableCalls": 300,
           "invented": {
-            "value": 0.5189003436426116,
-            "lo": 0.422680412371134,
-            "hi": 0.6151202749140893
+            "value": 0.5238095238095237,
+            "lo": 0.4251700680272109,
+            "hi": 0.6190476190476191
           },
           "overRefusal": {
             "value": 0.01,
@@ -1030,34 +1100,34 @@
           },
           "exactMatchWhenAnswered": 0.7676767676767676,
           "f1WhenAnswered": 0.9160810850204791,
-          "abstentionBalancedAccuracy": 0.7355498281786942,
-          "inventedMatchesPlausible": 0.543046357615894,
+          "abstentionBalancedAccuracy": 0.7330952380952381,
+          "inventedMatchesPlausible": 0.551948051948052,
           "sentinelAbstentions": 0,
           "phraseAbstentions": 143,
           "emptyCalls": 0,
           "formatViolations": 0,
           "ambiguousCalls": 1,
           "consistency": {
-            "decisionAgreement": 0.9932318104906936,
-            "decisionAgreementUnanswerable": 0.986254295532646,
+            "decisionAgreement": 0.9932659932659932,
+            "decisionAgreementUnanswerable": 0.9863945578231291,
             "decisionAgreementAnswerable": 1.0,
-            "fullyConsistentItems": 0.9898477157360406,
-            "answerAgreement": 0.9775784753363229
+            "fullyConsistentItems": 0.98989898989899,
+            "answerAgreement": 0.977728285077951
           },
-          "costUsd": 0.053569300000000125,
-          "meanCompletionTokens": 9.148900169204738
+          "costUsd": 0.05375500000000013,
+          "meanCompletionTokens": 9.122895622895623
         },
         {
           "model": "gemini-2.5-flash",
           "prompt": "strict",
-          "unanswerableItems": 97,
+          "unanswerableItems": 98,
           "answerableItems": 100,
-          "unanswerableCalls": 291,
+          "unanswerableCalls": 294,
           "answerableCalls": 300,
           "invented": {
-            "value": 0.15463917525773196,
-            "lo": 0.08247422680412371,
-            "hi": 0.23711340206185566
+            "value": 0.16326530612244897,
+            "lo": 0.09183673469387756,
+            "hi": 0.24489795918367346
           },
           "overRefusal": {
             "value": 0.03,
@@ -1076,8 +1146,8 @@
           },
           "exactMatchWhenAnswered": 0.7319587628865979,
           "f1WhenAnswered": 0.9016278395144376,
-          "abstentionBalancedAccuracy": 0.907680412371134,
-          "inventedMatchesPlausible": 0.4666666666666667,
+          "abstentionBalancedAccuracy": 0.9033673469387755,
+          "inventedMatchesPlausible": 0.5,
           "sentinelAbstentions": 255,
           "phraseAbstentions": 0,
           "emptyCalls": 0,
@@ -1088,22 +1158,22 @@
             "decisionAgreementUnanswerable": 1.0,
             "decisionAgreementAnswerable": 1.0,
             "fullyConsistentItems": 1.0,
-            "answerAgreement": 0.9940476190476191
+            "answerAgreement": 0.9941002949852508
           },
-          "costUsd": 0.05516790000000002,
-          "meanCompletionTokens": 6.3908629441624365
+          "costUsd": 0.05538240000000001,
+          "meanCompletionTokens": 6.378787878787879
         },
         {
           "model": "llama-3.3-70b",
           "prompt": "neutral",
-          "unanswerableItems": 97,
+          "unanswerableItems": 98,
           "answerableItems": 100,
-          "unanswerableCalls": 291,
+          "unanswerableCalls": 294,
           "answerableCalls": 300,
           "invented": {
-            "value": 0.9072164948453608,
-            "lo": 0.845360824742268,
-            "hi": 0.9587628865979382
+            "value": 0.9081632653061225,
+            "lo": 0.8469387755102041,
+            "hi": 0.9591836734693877
           },
           "overRefusal": {
             "value": 0.0,
@@ -1122,8 +1192,8 @@
           },
           "exactMatchWhenAnswered": 0.7033333333333334,
           "f1WhenAnswered": 0.8888220668220669,
-          "abstentionBalancedAccuracy": 0.5463917525773196,
-          "inventedMatchesPlausible": 0.4772727272727273,
+          "abstentionBalancedAccuracy": 0.5459183673469388,
+          "inventedMatchesPlausible": 0.48314606741573035,
           "sentinelAbstentions": 0,
           "phraseAbstentions": 27,
           "emptyCalls": 0,
@@ -1134,22 +1204,22 @@
             "decisionAgreementUnanswerable": 1.0,
             "decisionAgreementAnswerable": 1.0,
             "fullyConsistentItems": 1.0,
-            "answerAgreement": 0.8953900709219859
+            "answerAgreement": 0.8959435626102292
           },
-          "costUsd": 0.027362403999999972,
-          "meanCompletionTokens": 8.71912013536379
+          "costUsd": 0.027464163999999968,
+          "meanCompletionTokens": 8.705387205387206
         },
         {
           "model": "llama-3.3-70b",
           "prompt": "strict",
-          "unanswerableItems": 97,
+          "unanswerableItems": 98,
           "answerableItems": 100,
-          "unanswerableCalls": 291,
+          "unanswerableCalls": 294,
           "answerableCalls": 300,
           "invented": {
-            "value": 0.4845360824742268,
-            "lo": 0.3917525773195876,
-            "hi": 0.5807560137457045
+            "value": 0.4897959183673469,
+            "lo": 0.3979591836734694,
+            "hi": 0.5816326530612245
           },
           "overRefusal": {
             "value": 0.0,
@@ -1168,31 +1238,31 @@
           },
           "exactMatchWhenAnswered": 0.71,
           "f1WhenAnswered": 0.9011191031191034,
-          "abstentionBalancedAccuracy": 0.7577319587628866,
-          "inventedMatchesPlausible": 0.5673758865248227,
+          "abstentionBalancedAccuracy": 0.7551020408163265,
+          "inventedMatchesPlausible": 0.5763888888888888,
           "sentinelAbstentions": 150,
           "phraseAbstentions": 0,
           "emptyCalls": 0,
           "formatViolations": 1,
           "ambiguousCalls": 0,
           "consistency": {
-            "decisionAgreement": 0.9729272419627749,
-            "decisionAgreementUnanswerable": 0.945017182130584,
+            "decisionAgreement": 0.973063973063973,
+            "decisionAgreementUnanswerable": 0.945578231292517,
             "decisionAgreementAnswerable": 1.0,
-            "fullyConsistentItems": 0.9593908629441624,
-            "answerAgreement": 0.8822170900692841
+            "fullyConsistentItems": 0.9595959595959596,
+            "answerAgreement": 0.8830275229357798
           },
-          "costUsd": 0.029007017999999992,
-          "meanCompletionTokens": 7.482233502538071
+          "costUsd": 0.029082737999999993,
+          "meanCompletionTokens": 7.474747474747475
         }
       ],
       "tradeoffs": [
         {
           "model": "grok-4.3",
           "deltaInvented": {
-            "value": -0.7594501718213057,
-            "lo": -0.8350515463917526,
-            "hi": -0.6769759450171821
+            "value": -0.7517006802721088,
+            "lo": -0.8299319727891158,
+            "hi": -0.6666666666666666
           },
           "deltaOverRefusal": {
             "value": 0.04333333333333333,
@@ -1209,15 +1279,15 @@
             "lo": -0.064000814000814,
             "hi": 0.014610543452648705
           },
-          "inventedAvoidedPerExtraRefusal": 17.525773195876287,
+          "inventedAvoidedPerExtraRefusal": 17.346938775510203,
           "pattern": "trade-off"
         },
         {
           "model": "gpt-5.4-mini",
           "deltaInvented": {
-            "value": -0.42955326460481097,
-            "lo": -0.5189003436426117,
-            "hi": -0.3367697594501718
+            "value": -0.42857142857142866,
+            "lo": -0.520408163265306,
+            "hi": -0.3435374149659864
           },
           "deltaOverRefusal": {
             "value": 0.0,
@@ -1240,9 +1310,9 @@
         {
           "model": "claude-haiku-4.5",
           "deltaInvented": {
-            "value": -0.4192439862542956,
-            "lo": -0.5154639175257731,
-            "hi": -0.3264604810996563
+            "value": -0.4149659863945579,
+            "lo": -0.5102040816326531,
+            "hi": -0.3163265306122449
           },
           "deltaOverRefusal": {
             "value": 0.0,
@@ -1265,9 +1335,9 @@
         {
           "model": "gemini-2.5-flash",
           "deltaInvented": {
-            "value": -0.36426116838487965,
-            "lo": -0.45704467353951894,
-            "hi": -0.27147766323024053
+            "value": -0.3605442176870748,
+            "lo": -0.45578231292517,
+            "hi": -0.2653061224489796
           },
           "deltaOverRefusal": {
             "value": 0.02,
@@ -1284,15 +1354,15 @@
             "lo": -0.06952380952380953,
             "hi": -0.005000000000000004
           },
-          "inventedAvoidedPerExtraRefusal": 18.213058419243982,
+          "inventedAvoidedPerExtraRefusal": 18.02721088435374,
           "pattern": "invention-down-without-clear-over-refusal"
         },
         {
           "model": "llama-3.3-70b",
           "deltaInvented": {
-            "value": -0.422680412371134,
-            "lo": -0.5154639175257731,
-            "hi": -0.32989690721649484
+            "value": -0.41836734693877553,
+            "lo": -0.5102040816326531,
+            "hi": -0.32653061224489793
           },
           "deltaOverRefusal": {
             "value": 0.0,

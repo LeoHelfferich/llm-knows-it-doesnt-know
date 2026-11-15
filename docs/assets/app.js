@@ -194,3 +194,33 @@ function legend(whiskers = true) {
 function cellOf(scope, model, prompt) {
   return scope.cells.find((c) => c.model === model && c.prompt === prompt);
 }
+
+function callStat(run) {
+  const counts = run.failedAttemptCounts || {};
+  const entries = Object.entries(counts);
+  const total = entries.reduce((sum, [, n]) => sum + n, 0);
+  if (run.status === "complete" && run.okCalls === run.plannedCalls && total > 0) {
+    const detail = entries.map(([code, n]) => code === "other" ? `${n} other` : `HTTP ${code} × ${n}`).join(", ");
+    return [`${run.okCalls}`, `successful calls, every planned call (${detail} retried)`];
+  }
+  return [`${run.okCalls}`, `successful calls (${run.errorCalls} failed attempts)`];
+}
+
+/** One sentence per model that was not served by a single provider. The bar is that mixture. */
+function servingNote(run) {
+  const rows = run.servingProviders || [];
+  const byModel = new Map();
+  for (const row of rows) {
+    if (!byModel.has(row.model)) byModel.set(row.model, []);
+    byModel.get(row.model).push(row);
+  }
+  const mixed = [...byModel.entries()].filter(([, list]) => list.length > 1);
+  if (!mixed.length) return null;
+  const bits = mixed.map(([model, list]) => {
+    const parts = list.map((row) => `${row.provider} ${row.calls}`).join(", ");
+    return `${model}: ${parts}`;
+  });
+  return el("p", { class: "lead" },
+    "OpenRouter chose the serving provider, and a bar for a model with more than one host is that mixture. ",
+    bits.join(". "), ".");
+}

@@ -31,6 +31,22 @@ private data class Parsed(val rep: Int, val parsed: ParsedResponse, val record: 
  *
  * Rates are means over items, so a chatty item with more repetitions does not outweigh a quiet one.
  * Intervals are percentile bootstrap intervals over items, with a fixed seed.
+ *
+ * ```
+ * calls
+ *   |
+ *   +-- CallLog.okByKey          latest success per (item, model, prompt, rep)
+ *   +-- ResponseParser.parse
+ *   |
+ *   v
+ * grouped by (model, prompt, item)
+ *   |
+ *   +-- cell()       one model x one prompt
+ *   +-- tradeoff()   strict minus neutral, paired on the same item
+ *   +-- scope()      every model x both prompts, after dropping disputed ids
+ *   +-- itemViews()  the per-reply rows the item pages render
+ *   +-- reviewCandidates()  items a person should look at before trusting the gold label
+ * ```
  */
 class Analyzer(
     private val items: List<Item>,
@@ -56,6 +72,24 @@ class Analyzer(
 
     private fun mean(values: List<Double>): Double? = if (values.isEmpty()) null else values.sum() / values.size
 
+    /**
+     * Point estimate plus a 95% percentile bootstrap over items.
+     *
+     * ```
+     * one number per item
+     *   |
+     *   +-- empty ------------------------> Interval(null, null, null)
+     *   +-- one item, or resamples <= 0 --> point only; lo and hi stay null
+     *   |
+     *   v
+     * draw n items with replacement, `bootstrapResamples` times, seed fixed
+     *   |
+     *   v
+     * sort the means
+     *   lo = index floor(0.025 * resamples)
+     *   hi = index floor(0.975 * resamples), clamped to the last mean
+     * ```
+     */
     private fun interval(values: List<Double>): Interval {
         if (values.isEmpty()) return Interval(null, null, null)
         val point = values.average()
@@ -89,6 +123,26 @@ class Analyzer(
         return agree.toDouble() / total
     }
 
+    /**
+     * One model and one prompt, after dropping [excluded] item ids.
+     * An item with no successful calls is left out of the mean. It is not counted as a zero.
+     *
+     * ```
+     * unanswerable items                         answerable items
+     *   |                                          |
+     *   v                                          v
+     * fraction of reps that answered             fraction of reps that abstained
+     * ("invented")                               ("over-refusal")
+     *   |                                          |
+     *   +---- mean across items, then interval() -+
+     *
+     * answerable reps that did answer --> exact match and token F1 against the gold spans
+     * reps of the same item           --> pairwise agreement of the decision
+     *                                      (abstain vs the outcome name)
+     *
+     * abstention balanced accuracy = ((1 - invented) + (1 - over-refusal)) / 2
+     * ```
+     */
     fun cell(model: String, prompt: PromptVariant, excluded: Set<String>): CellMetrics {
         val unans = items.filter { it.kind == Kind.UNANSWERABLE && it.id !in excluded }
         val ans = items.filter { it.kind == Kind.ANSWERABLE && it.id !in excluded }
@@ -165,6 +219,23 @@ class Analyzer(
         return interval(deltas)
     }
 
+    /**
+     * Strict prompt minus neutral prompt, paired on the same item.
+     * A bound counts only when the whole interval sits on one side of zero.
+     *
+     * ```
+     * per item: mean(strict reps) - mean(neutral reps)
+     *   |
+     *   +-- either prompt has no calls ---------> "insufficient-data"
+     *   +-- invented hi < 0 AND refusal lo > 0 -> "trade-off"
+     *   +-- invented hi < 0 -------------------> "invention-down-without-clear-over-refusal"
+     *   +-- refusal lo > 0 --------------------> "over-refusal-up-without-clear-invention-drop"
+     *   +-- otherwise --------------------------> "no-clear-effect"
+     *
+     * inventedAvoidedPerExtraRefusal = -deltaInvented / deltaOverRefusal
+     *   only when invention fell and over-refusal rose
+     * ```
+     */
     fun tradeoff(model: String, excluded: Set<String>): Tradeoff {
         val dInv = pairedDelta(model, Kind.UNANSWERABLE, excluded) { _, r -> r.map { if (it.parsed.outcome == Outcome.ANSWER) 1.0 else 0.0 }.average() }
         val dRef = pairedDelta(model, Kind.ANSWERABLE, excluded) { _, r -> r.map { if (it.parsed.outcome.isAbstention) 1.0 else 0.0 }.average() }
@@ -183,6 +254,11 @@ class Analyzer(
         return Tradeoff(model, dInv, dRef, dEm, dF1, ratio, pattern)
     }
 
+    /**
+     * Every model crossed with both prompts, on the items that remain after [excluded].
+     * Ids in [excluded] that are not in this sample are ignored, so a disputed file
+     * from a larger sample does not change the counts.
+     */
     fun scope(name: String, excluded: Set<String>): Scope {
         val present = excluded.filter { it in itemsById }.toSet()
         val cells = modelAliases.flatMap { m -> PromptVariant.entries.map { cell(m, it, present) } }
@@ -196,6 +272,11 @@ class Analyzer(
         )
     }
 
+    /**
+     * One view per sample item. A reply whose text is exactly the sentinel, or exactly
+     * `ANSWER: ` plus the parsed answer, stores no raw text; anything else keeps [ResponseView.raw]
+     * so the page can show the deviation.
+     */
     fun itemViews(disputed: Map<String, DisputedItem>): List<ItemView> = items.map { item ->
         val responses = modelAliases.flatMap { m ->
             PromptVariant.entries.flatMap { v ->
@@ -216,6 +297,18 @@ class Analyzer(
         )
     }
 
+    /**
+     * Items whose gold label looks doubtful, or whose reply the parser could not decide.
+     *
+     * ```
+     * unanswerable: >= 3 models answered under strict, in at least 2/3 of reps
+     * answerable:   >= 3 models abstained under strict, in at least 2/3 of reps
+     *               OR mean neutral-prompt F1 across >= 3 models is below 0.2
+     * either kind:  any reply mixed an answer with refusal wording
+     * ```
+     *
+     * Nothing here is excluded. A person copies confirmed ids into `data/disputed.json`.
+     */
     fun reviewCandidates(): List<ReviewCandidate> = items.mapNotNull { item ->
         val reasons = mutableListOf<String>()
         if (item.kind == Kind.UNANSWERABLE) {

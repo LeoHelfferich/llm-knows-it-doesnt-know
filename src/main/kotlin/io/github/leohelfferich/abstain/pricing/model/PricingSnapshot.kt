@@ -43,6 +43,18 @@ data class PricingSnapshot(
         fun load(path: Path): PricingSnapshot =
             PrettyJson.decodeFromString(serializer(), Files.readString(path))
 
+        /**
+         * Keeps [ids], in that order, from an OpenRouter `/models` body.
+         *
+         * ```
+         * { "data": [ { "id", "canonical_slug", "name", "context_length",
+         *               "pricing": { "prompt", "completion", "internal_reasoning" },
+         *               "supported_parameters": [ ... ] } ] }
+         * ```
+         *
+         * An id that the list does not contain is an error. Prices stay decimal strings until
+         * [SnapshotModel.promptPrice] parses them, so the snapshot file does not round them.
+         */
         fun fromModelList(json: String, ids: List<String>, retrievedOn: String): PricingSnapshot {
             val data = CompactJson.parseToJsonElement(json).jsonObject.getValue("data").jsonArray
             val byId = data.map { it.jsonObject }.associateBy { it.getValue("id").jsonPrimitive.content }

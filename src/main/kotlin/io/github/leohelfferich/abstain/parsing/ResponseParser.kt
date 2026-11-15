@@ -6,10 +6,7 @@ import io.github.leohelfferich.abstain.parsing.model.ParsedResponse
 
 /**
  * Deterministic, judge-free classification of a model reply.
- *
- * 1. exact sentinel (also after "ANSWER:" or inside backticks/quotes) -> ABSTAIN_SENTINEL
- * 2. short payload that matches the refusal lexicon -> ABSTAIN_PHRASE (neutral prompt has no sentinel)
- * 3. otherwise the payload is the answer
+ * The decision tree is on [parse].
  */
 object ResponseParser {
     const val MAX_ABSTENTION_WORDS = 25
@@ -40,6 +37,37 @@ object ResponseParser {
 
     private fun isSentinel(text: String) = wrapper.replace(text, "").equals(Prompts.SENTINEL, ignoreCase = false)
 
+    /**
+     * Classifies one reply. Empty and a missing body are the same outcome.
+     *
+     * ```
+     * content
+     *   |
+     *   +-- blank -------------------------------------------> EMPTY
+     *   |
+     *   +-- first line is NOT_IN_CONTEXT --------------------> ABSTAIN_SENTINEL
+     *   |     extra lines set formatViolation
+     *   |
+     *   v
+     * strip a leading "ANSWER:" (markdown asterisks allowed)
+     *   a bare "ANSWER:" takes the next line as the payload
+     *   |
+     *   +-- payload blank -----------------------------------> EMPTY
+     *   +-- payload is NOT_IN_CONTEXT -----------------------> ABSTAIN_SENTINEL
+     *   +-- no ANSWER: prefix, but NOT_IN_CONTEXT appears ---> ABSTAIN_SENTINEL
+     *   |     (formatViolation; the token must be a whole word)
+     *   |
+     *   +-- refusal lexicon
+     *   |     <= 25 words -----------------------------------> ABSTAIN_PHRASE
+     *   |     longer ----------------------------------------> ANSWER, ambiguous=true
+     *   |       counted as an answer, flagged for review
+     *   |
+     *   +-- otherwise ---------------------------------------> ANSWER
+     *
+     * formatViolation is set unless the reply is exactly one "ANSWER:" line
+     * (a lone sentinel line is not a violation).
+     * ```
+     */
     fun parse(content: String?): ParsedResponse {
         val text = content?.trim().orEmpty()
         if (text.isEmpty()) return ParsedResponse(Outcome.EMPTY, null, formatViolation = true, ambiguous = false)

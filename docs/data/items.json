@@ -7981,8 +7981,8 @@
       "plausibleAnswers": [
         "electric motors"
       ],
-      "disputed": true,
-      "disputedReason": "Passage: 'steam has been largely superseded by internal combustion engines or electric motors'. 'Superseded power' is a loose rewording of superseded steam power, not a meaning-changing perturbation; electric motors is stated.",
+      "disputed": false,
+      "disputedReason": null,
       "responses": [
         {
           "model": "grok-4.3",
@@ -13524,7 +13524,7 @@
         "Earthquake occurrence in California."
       ],
       "disputed": true,
-      "disputedReason": "Only perturbation is the typo 'UGSS' for USGS; the passage states the USGS forecast 'models Earthquake occurrence in California', so the question is answerable.",
+      "disputedReason": "The only change from the passage is the typo UGSS for USGS. The passage states that the USGS California Earthquake forecast models earthquake occurrence in California, so the question is answerable.",
       "responses": [
         {
           "model": "grok-4.3",
@@ -23223,7 +23223,7 @@
         "Japan"
       ],
       "disputed": true,
-      "disputedReason": "Passage: 'Some European nations and Japan sought to disassociate themselves from United States foreign policy ... to avoid being targeted by the boycott.' The answer Japan is stated directly; all 15 strict replies gave it.",
+      "disputedReason": "The passage states the answer directly: 'Some European nations and Japan sought to disassociate themselves from United States foreign policy in the Middle East to avoid being targeted by the boycott.'",
       "responses": [
         {
           "model": "grok-4.3",

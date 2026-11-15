@@ -31,13 +31,15 @@ chrome("tradeoff.html");
       el("td", {}, pp(t.deltaInvented.value), " ", el("small", {}, rangePp(t.deltaInvented))),
       el("td", {}, pp(t.deltaOverRefusal.value), " ", el("small", {}, rangePp(t.deltaOverRefusal))),
       el("td", {}, pp(t.deltaExactMatch.value), " ", el("small", {}, rangePp(t.deltaExactMatch))),
-      el("td", {}, t.inventedAvoidedPerExtraRefusal === null ? "n/a" : t.inventedAvoidedPerExtraRefusal.toFixed(1)),
+      el("td", {}, t.pattern === "trade-off" && t.inventedAvoidedPerExtraRefusal !== null ? t.inventedAvoidedPerExtraRefusal.toFixed(1) : "n/a"),
       el("td", { class: "l" }, el("span", { class: "tag" }, t.pattern))));
     host.append(el("h2", {}, "Strict minus neutral, paired by item"), el("div", { class: "table-scroll" }, el("table", {},
       el("thead", {}, el("tr", {}, ["Model", "Δ invention (unans.)", "Δ over-refusal (ans.)", "Δ exact match (ans.)",
         "Inventions avoided per extra refusal", "Pattern"].map((t, i) => el("th", { class: i === 5 ? "l" : "" }, t)))),
       el("tbody", {}, rows))),
-      el("p", { class: "lead" }, "“Inventions avoided per extra refusal” is the drop in the invention rate divided by the rise in the over-refusal rate; it is only defined when invention falls and over-refusal rises. Both sets have the same size, so the ratio is also the number of avoided inventions per additional wrongly refused answerable question. Intervals are 95% bootstrap intervals over items."));
+      el("p", { class: "lead" }, "The ratio is shown only when both intervals exclude zero: invention down, and over-refusal up. It is that drop divided by that rise, and it has no interval of its own. A rise of a few points makes the ratio swing, so the percentage-point columns are the result. Both sets have the same size, so a shown ratio is also avoided inventions per extra refused answerable question."));
+    const mix = servingNote(results.run);
+    if (mix) host.append(mix);
 
     const bal = scope.cells.map((c) => el("tr", {}, el("td", {}, c.model), el("td", { class: "l" }, c.prompt),
       el("td", {}, pct(c.abstentionBalancedAccuracy)), el("td", {}, pct(c.inventedMatchesPlausible)),

@@ -2,18 +2,13 @@
   "items": [
     {
       "id": "5ad03d2277cf76001a686ecf",
-      "reason": "Only perturbation is the typo 'UGSS' for USGS; the passage states the USGS forecast 'models Earthquake occurrence in California', so the question is answerable.",
-      "reviewer": "Grok Bot (manual review of the full run, 2026-10-27)"
+      "reason": "The only change from the passage is the typo UGSS for USGS. The passage states that the USGS California Earthquake forecast models earthquake occurrence in California, so the question is answerable.",
+      "reviewer": "Leo Helfferich"
     },
     {
       "id": "5a7504cb97ca42001a521dc4",
-      "reason": "Passage: 'Some European nations and Japan sought to disassociate themselves from United States foreign policy ... to avoid being targeted by the boycott.' The answer Japan is stated directly; all 15 strict replies gave it.",
-      "reviewer": "Grok Bot (manual review of the full run, 2026-10-27)"
-    },
-    {
-      "id": "5ad3c3bc604f3c001a3fefa0",
-      "reason": "Passage: 'steam has been largely superseded by internal combustion engines or electric motors'. 'Superseded power' is a loose rewording of superseded steam power, not a meaning-changing perturbation; electric motors is stated.",
-      "reviewer": "Grok Bot (manual review of the full run, 2026-10-27)"
+      "reason": "The passage states the answer directly: 'Some European nations and Japan sought to disassociate themselves from United States foreign policy in the Middle East to avoid being targeted by the boycott.'",
+      "reviewer": "Leo Helfferich"
     }
   ]
 }

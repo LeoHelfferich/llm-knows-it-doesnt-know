@@ -2,7 +2,11 @@ package io.github.leohelfferich.abstain.cost.model
 
 import kotlinx.serialization.Serializable
 
-/** Cost of a whole run (dry run or full) at three levels of caution. */
+/**
+ * Cost of a whole run (dry run or full) at three levels of caution.
+ * Expected uses assumed or observed tokens, pessimistic inflates them, ceiling prices every
+ * completion at `maxTokens`. Whether each column fits is `expected EUR <= cap - safety margin`.
+ */
 @Serializable
 data class Estimate(
     val label: String,

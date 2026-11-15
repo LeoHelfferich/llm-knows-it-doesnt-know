@@ -25,6 +25,25 @@ import io.github.leohelfferich.abstain.analysis.model.ReviewFile
  *
  * A mismatch is refused. Scoring calls against a different sample or a rewritten prompt would
  * publish numbers the calls were not made for.
+ *
+ * ```
+ * manifest.json + calls.jsonl + sample.json + disputed.json
+ *   |
+ *   +-- sample SHA-256 must equal the manifest
+ *   +-- each prompt-template SHA-256 must equal the manifest
+ *   +-- every disputed id must exist in the sample
+ *   |
+ *   v
+ * Analyzer, on the sample items that this run actually called
+ *   |
+ *   +-- scope "all"
+ *   +-- scope "excludingDisputed"    only disputed ids that appear in this run
+ *   |
+ *   v
+ * Results          published metrics, two scopes
+ * ItemsFile        one row per reply, for the item pages
+ * ReviewFile       candidates only; analyze never excludes by itself
+ * ```
  */
 object AnalysisPipeline {
     const val SCHEMA_VERSION = 1
@@ -33,6 +52,10 @@ object AnalysisPipeline {
 
     class Output(val results: Results, val items: ItemsFile, val review: ReviewFile)
 
+    /**
+     * Scores [runDir]. The class diagram is the order of the checks.
+     * A missing [disputedFile] means nothing is disputed.
+     */
     fun analyze(runDir: Path, sample: SampleFile, config: ExperimentConfig, sampleSha256: String, disputedFile: Path): Output {
         val manifest = PrettyJson.decodeFromString(Manifest.serializer(), Files.readString(runDir.resolve("manifest.json")))
         require(manifest.sampleSha256 == sampleSha256) {
@@ -80,6 +103,8 @@ object AnalysisPipeline {
                 manifest.errorCalls,
                 manifest.spentEurThisRun,
                 manifest.capEur,
+                RunFacts.servingProviders(calls, aliases),
+                RunFacts.failedAttemptCounts(calls),
             ),
             sample = SampleInfo(
                 sample.seed, sample.algorithm, items.count { it.kind == Kind.ANSWERABLE }, items.count { it.kind == Kind.UNANSWERABLE },

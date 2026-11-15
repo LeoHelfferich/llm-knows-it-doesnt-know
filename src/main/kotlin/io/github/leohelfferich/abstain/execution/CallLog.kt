@@ -6,6 +6,28 @@ import java.nio.file.Path
 import io.github.leohelfferich.abstain.utils.CompactJson
 import io.github.leohelfferich.abstain.execution.model.CallRecord
 
+/**
+ * `calls.jsonl`, plus `failed-attempts.jsonl` when that file is beside it.
+ *
+ * ```
+ * read(runDir)
+ *   |
+ *   +-- each non-blank line --> CallRecord
+ *   +-- a partial last line (process killed mid-write) is dropped
+ *   |     that call is retried, because its key has no complete record
+ *   +-- a bad line earlier than the last one throws
+ *   |     continuing would respend or drop a finished call
+ *   |
+ *   v
+ * okByKey
+ *   latest status=ok per call key
+ *   an earlier error for the same key does not hide a later success
+ *
+ * spentUsdAcrossRuns
+ *   sum of costUsd over every run directory
+ *   failed attempts contribute 0
+ * ```
+ */
 object CallLog {
     fun file(runDir: Path): Path = runDir.resolve("calls.jsonl")
 

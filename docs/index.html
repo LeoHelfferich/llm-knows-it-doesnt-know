@@ -26,11 +26,12 @@ chrome("index.html");
   function render(scope) {
     host.replaceChildren();
     const r = results.run;
+    const calls = callStat(r);
     host.append(el("div", { class: "grid" },
       stat(`${r.models.length} × 2 × ${r.reps}`, "models × prompts × repetitions"),
       stat(`${scope.unanswerableItems} / ${scope.answerableItems}`, "unanswerable / answerable items"),
-      stat(`${r.okCalls}`, `successful calls (${r.errorCalls} failed attempts)`),
-      stat(`€${r.spentEur.toFixed(2)}`, `spent of €${r.capEur.toFixed(0)} hard cap`)));
+      stat(calls[0], calls[1]),
+      stat(`€${r.spentEur.toFixed(2)}`, `spent of a €${r.capEur.toFixed(0)} cap on this run`)));
     const groups = r.models.map((m) => ({ label: m.alias, model: m.alias }));
     const get = (g, p) => cellOf(scope, g.model, p);
     host.append(el("h2", {}, "Invention and over-refusal"), legend(),
@@ -43,6 +44,8 @@ chrome("index.html");
           valueOf: (g, p) => get(g, p).exactMatch.value, ciOf: (g, p) => get(g, p).exactMatch })),
         card("Same decision across the 3 repetitions (higher is better)", barChart({ title: "Same decision across the 3 repetitions (higher is better)", groups,
           valueOf: (g, p) => get(g, p).consistency.decisionAgreement }))));
+    const mix = servingNote(r);
+    if (mix) host.append(mix);
 
     const rows = scope.cells.map((c) => el("tr", {},
       el("td", {}, c.model), el("td", { class: "l" }, c.prompt),

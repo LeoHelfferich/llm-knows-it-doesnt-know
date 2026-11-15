@@ -26,4 +26,6 @@ data class RunInfo(
     val errorCalls: Int,
     val spentEur: Double,
     val capEur: Double,
+    val servingProviders: List<ServingProvider> = emptyList(),
+    val failedAttemptCounts: Map<String, Int> = emptyMap(),
 )

@@ -56,6 +56,26 @@ The API key is read from the OPENROUTER_API_KEY environment variable and is neve
  *
  * The API key is taken from the environment map passed in, and from nowhere else. Exit codes are
  * 0 for success, 1 for a runtime failure or a refused run, and 2 for a usage error.
+ *
+ * ```
+ * args
+ *   |
+ *   +-- fetch-data --> download dev-v2.0.json if missing, then check SHA-256
+ *   |
+ *   +-- sample ------> parse SQuAD, draw the seed, write data/sample.json
+ *   |                   --check compares bytes and writes nothing
+ *   |
+ *   +-- estimate ----> pricing snapshot x sample --> print EUR
+ *   |                   --from-run replaces assumed tokens with observed ones
+ *   |
+ *   +-- run ---------> plan --> print estimate --> confirm
+ *   |                   |                          (--yes and --mock skip the prompt)
+ *   |                   v
+ *   |                 Runner: resumable, locked, hard-capped
+ *   |
+ *   +-- analyze -----> AnalysisPipeline --> results, items, review candidates
+ *                       a complete non-mock full run is written under docs/data/
+ * ```
  */
 class Cli(
     private val workspace: Workspace,
@@ -163,6 +183,10 @@ class Cli(
         return 0
     }
 
+    /**
+     * The committed price list, or a fresh public OpenRouter list when `--refresh` is set.
+     * Refresh rewrites the snapshot file. It does not need an API key.
+     */
     private fun loadSnapshot(config: ExperimentConfig, refresh: Boolean): PricingSnapshot {
         if (!refresh) return PricingSnapshot.load(workspace.snapshotFile)
         val snap = PricingSnapshot.fromModelList(PricingSnapshot.fetchModelList(), config.models.map { it.openRouterId }, today())
@@ -172,6 +196,10 @@ class Cli(
         return snap
     }
 
+    /**
+     * `sendTemperature` in the config must agree with OpenRouter's `supported_parameters`.
+     * A model that rejects `temperature` must not be sent one.
+     */
     private fun checkSnapshotMatchesConfig(config: ExperimentConfig, snapshot: PricingSnapshot) {
         config.models.forEach { m ->
             val s = snapshot.model(m.openRouterId)
@@ -212,6 +240,14 @@ class Cli(
     /**
      * Resolves the run, prints the estimate, and asks before spending money.
      * Returns 1 when the run is refused or does not finish every planned call.
+     *
+     * ```
+     * runPlan --> chatClient --> costEstimate --> confirmSpend --> Runner.execute --> report
+     *                |                               |
+     *                |                               +-- over the usable cap --> return 1
+     *                |                               +-- stdin is not "yes"  --> return 1
+     *                +-- --mock: SimulatedChatClient, no key, no network
+     * ```
      */
     private fun runCommand(arguments: Args): Int {
         val plan = runPlan(arguments)
@@ -228,6 +264,11 @@ class Cli(
         return if (summary.status == "complete") 0 else 1
     }
 
+    /**
+     * Which items, how many repetitions, and which directory.
+     * `--dry-run` takes the first pairs and the dry-run repetition count.
+     * `--mock` points the directory at `build/mock-runs/` instead of `data/runs/`.
+     */
     private fun runPlan(arguments: Args): RunPlan {
         val configured = workspace.loadConfig().also { it.validate() }
         val config = configured.copy(capEur = capped(arguments, configured)).also { it.validate() }
@@ -297,6 +338,19 @@ class Cli(
     /**
      * Prints what is left to spend. Without `--yes`, waits for the word `yes`.
      * Returns false when the run must not start. Nothing has been sent yet.
+     *
+     * ```
+     * remaining = expected cost of keys that are not yet status=ok
+     *             (finished calls are already inside "spent", so they are not added again)
+     * usable    = cap - safety margin
+     *
+     * remaining calls > 0
+     *   AND (expected does not fit the cap
+     *        OR spent + remaining > usable) --> refuse
+     * --yes ---------------------------------> start
+     * stdin is exactly "yes" ----------------> start
+     * anything else -------------------------> abort
+     * ```
      */
     private fun confirmSpend(arguments: Args, plan: RunPlan, estimate: Estimate): Boolean {
         val spent = CallLog.spentUsdAcrossRuns(workspace.runsDir) * plan.config.eurPerUsd

@@ -10,7 +10,22 @@ import io.github.leohelfferich.abstain.pricing.model.SnapshotModel
  *
  * Before every call the worst case for that call is reserved. The call is refused when spent plus
  * reserved plus that worst case would exceed the usable budget (cap minus the safety margin).
- * Thread-safe.
+ * Every mutation is synchronized on this instance.
+ *
+ * ```
+ * budget = (capEur - safetyMarginEur) / eurPerUsd
+ * spent starts at the EUR already recorded under data/runs/, converted back to USD
+ *
+ * tryReserve(worst)
+ *   spent + reserved + worst > budget --> false; the call is not sent
+ *   else                               --> reserved += worst; true
+ *
+ * settle(worst, actual)
+ *   reserved -= worst
+ *   spent    += actual          actual is 0 when the call failed
+ * ```
+ *
+ * [worstCaseUsd] prices the prompt at one token per two characters and the completion at `maxTokens`.
  */
 class CostGuard(capEur: Double, safetyMarginEur: Double, private val eurPerUsd: Double, alreadySpentEur: Double) {
     private val budgetUsd = (capEur - safetyMarginEur) / eurPerUsd

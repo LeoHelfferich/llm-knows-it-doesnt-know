@@ -10,16 +10,8 @@ import io.github.leohelfferich.abstain.squad.model.SquadQuestion
 import io.github.leohelfferich.abstain.squad.model.SquadParagraph
 
 /**
- * Seeded sampler. Algorithm (also documented in the README):
- *  1. Keep paragraphs in file order. Eligible = at least one answerable and one unanswerable question.
- *  2. Shuffle the eligible paragraphs with a Fisher-Yates shuffle driven by java.util.Random(seed)
- *     (a specified LCG, so the result is identical on every JVM).
- *  3. For the first N paragraphs, draw one answerable and one unanswerable question (each from its own
- *     Fisher-Yates shuffle of that paragraph's questions in file order, using the same Random stream).
- *     Every pair therefore shares one passage and no passage is used twice.
- *  4. If the two requested counts differ or there are too few eligible paragraphs, the remainder is
- *     taken one question per unused paragraph from a second shuffle of the remaining paragraphs
- *     (not used for the committed 100 + 100 sample, where every draw is a pair).
+ * Seeded sampler. The draw is [sample]; the diagram there is the algorithm `paired-paragraph-v1`.
+ * `java.util.Random` is a specified LCG, so the same seed yields the same sample on every JVM.
  */
 object Sampler {
     const val ALGORITHM = "paired-paragraph-v1: shuffle eligible paragraphs with java.util.Random(seed) Fisher-Yates; " +
@@ -34,6 +26,31 @@ object Sampler {
         return a
     }
 
+    /**
+     * Draws [answerable] and [unanswerable] questions. File order is the order before the shuffle.
+     *
+     * ```
+     * paragraphs, file order
+     *   |
+     *   v
+     * eligible: at least one answerable AND one unanswerable question
+     *   |
+     *   v
+     * Fisher-Yates with java.util.Random(seed)
+     *   |
+     *   v
+     * first min(answerable, unanswerable, eligible) paragraphs
+     *   |
+     *   +-- Fisher-Yates of its answerable questions   --> take the first
+     *   +-- Fisher-Yates of its unanswerable questions --> take the first
+     *        both share pairIndex; that passage is not used again
+     *   |
+     *   v
+     * if one count is still short:
+     *   one matching question per unused paragraph, from a second shuffle
+     *   (the committed 100 + 100 sample never reaches this branch)
+     * ```
+     */
     fun sample(paragraphs: List<SquadParagraph>, seed: Long, answerable: Int, unanswerable: Int): List<Item> {
         val rnd = Random(seed)
         val eligible = shuffled(paragraphs.filter { p -> p.questions.any { !it.isImpossible } && p.questions.any { it.isImpossible } }, rnd)
@@ -70,6 +87,11 @@ object Sampler {
         plausibleAnswers = question.plausibleAnswers,
     )
 
+    /**
+     * Tops up one kind after the pairs are taken.
+     * A paragraph with no remaining question of that kind is skipped.
+     * Returns the next free pair index.
+     */
     private fun fill(
         items: MutableList<Item>,
         rnd: Random,

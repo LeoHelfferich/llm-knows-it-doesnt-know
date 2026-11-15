@@ -6,6 +6,20 @@ import io.github.leohelfferich.abstain.prompt.model.PromptVariant
 /**
  * The two prompt variants. Both ask for the same output format so abstentions can be detected
  * mechanically. The only intended difference is the explicit abstention instruction in STRICT.
+ *
+ * ```
+ * NEUTRAL                              STRICT
+ * "Answer the question                 "Answer using only the context.
+ *  using the context."                  If it does not contain the answer,
+ *                                       reply exactly NOT_IN_CONTEXT."
+ *        |                                     |
+ *        +------- same one-line ANSWER: format -------+
+ *                  STRICT also allows a bare NOT_IN_CONTEXT line
+ * ```
+ *
+ * [render] substitutes `{context}` and `{question}` only. Any other braces in a passage stay as text.
+ * [templateSha256] is stored in the manifest so a later edit of a template cannot be scored as if it
+ * were the prompt that was sent.
  */
 object Prompts {
     const val SENTINEL = "NOT_IN_CONTEXT"
