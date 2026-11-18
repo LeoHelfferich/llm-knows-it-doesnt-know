@@ -1,0 +1,191 @@
+{
+ "conflict": {
+  "calls": 150,
+  "errors": 0,
+  "costUsd": 0.027408,
+  "neutral": {
+   "total": {
+    "context": 75
+   },
+   "by_model": {
+    "grok-4.3": {
+     "context": 15
+    },
+    "gpt-5.4-mini": {
+     "context": 15
+    },
+    "claude-haiku-4.5": {
+     "context": 15
+    },
+    "gemini-2.5-flash": {
+     "context": 15
+    },
+    "llama-3.3-70b": {
+     "context": 15
+    }
+   },
+   "by_itemId": {
+    "saving-private-ryan": {
+     "context": 15
+    },
+    "titanic": {
+     "context": 15
+    },
+    "dark-knight": {
+     "context": 15
+    },
+    "forrest-gump": {
+     "context": 15
+    },
+    "pirates-caribbean": {
+     "context": 15
+    }
+   }
+  },
+  "strict": {
+   "total": {
+    "context": 75
+   },
+   "by_model": {
+    "grok-4.3": {
+     "context": 15
+    },
+    "gpt-5.4-mini": {
+     "context": 15
+    },
+    "claude-haiku-4.5": {
+     "context": 15
+    },
+    "gemini-2.5-flash": {
+     "context": 15
+    },
+    "llama-3.3-70b": {
+     "context": 15
+    }
+   },
+   "by_itemId": {
+    "saving-private-ryan": {
+     "context": 15
+    },
+    "titanic": {
+     "context": 15
+    },
+    "dark-knight": {
+     "context": 15
+    },
+    "forrest-gump": {
+     "context": 15
+    },
+    "pirates-caribbean": {
+     "context": 15
+    }
+   }
+  }
+ },
+ "gap": {
+  "calls": 150,
+  "errors": 0,
+  "costUsd": 0.02618,
+  "neutral": {
+   "total": {
+    "abstain": 32,
+    "world": 14,
+    "role_name": 29
+   },
+   "by_model": {
+    "grok-4.3": {
+     "abstain": 3,
+     "role_name": 10,
+     "world": 2
+    },
+    "gpt-5.4-mini": {
+     "world": 12,
+     "role_name": 3
+    },
+    "claude-haiku-4.5": {
+     "abstain": 15
+    },
+    "gemini-2.5-flash": {
+     "abstain": 8,
+     "role_name": 7
+    },
+    "llama-3.3-70b": {
+     "abstain": 6,
+     "role_name": 9
+    }
+   },
+   "by_itemId": {
+    "saving-private-ryan--gap": {
+     "abstain": 12,
+     "world": 3
+    },
+    "titanic--gap": {
+     "role_name": 4,
+     "world": 5,
+     "abstain": 6
+    },
+    "dark-knight--gap": {
+     "role_name": 6,
+     "world": 2,
+     "abstain": 7
+    },
+    "forrest-gump--gap": {
+     "role_name": 9,
+     "world": 2,
+     "abstain": 4
+    },
+    "pirates-caribbean--gap": {
+     "role_name": 10,
+     "world": 2,
+     "abstain": 3
+    }
+   }
+  },
+  "strict": {
+   "total": {
+    "abstain": 66,
+    "role_name": 9
+   },
+   "by_model": {
+    "grok-4.3": {
+     "abstain": 11,
+     "role_name": 4
+    },
+    "gpt-5.4-mini": {
+     "abstain": 13,
+     "role_name": 2
+    },
+    "claude-haiku-4.5": {
+     "abstain": 15
+    },
+    "gemini-2.5-flash": {
+     "abstain": 15
+    },
+    "llama-3.3-70b": {
+     "abstain": 12,
+     "role_name": 3
+    }
+   },
+   "by_itemId": {
+    "saving-private-ryan--gap": {
+     "abstain": 15
+    },
+    "titanic--gap": {
+     "role_name": 5,
+     "abstain": 10
+    },
+    "dark-knight--gap": {
+     "abstain": 15
+    },
+    "forrest-gump--gap": {
+     "abstain": 15
+    },
+    "pirates-caribbean--gap": {
+     "role_name": 4,
+     "abstain": 11
+    }
+   }
+  }
+ },
+ "totalCostUsd": 0.053588
+}

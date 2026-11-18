@@ -228,6 +228,8 @@ The run manifest (`data/runs/<id>/manifest.json`) records: run id and kind, mock
 - One dataset, one passage format, short extractive answers. Results say nothing about long documents or retrieval pipelines.
 - SQuAD annotations are imperfect; use the manual review loop and report both scopes.
 
+Follow-up experiment (context vs. world knowledge): [`follow-up-wissenskonflikt/`](follow-up-wissenskonflikt/).
+
 ## Attribution and licenses
 
 - Code, configuration, manifests, model replies and computed metrics: **MIT** (see [LICENSE](LICENSE)).
